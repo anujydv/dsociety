@@ -1,0 +1,43 @@
+namespace org.dsociety.rstate.participant
+import org.dsociety.rstate.land.*
+
+participant Person identified by userID {
+  o String userID
+  o UserData detail
+  o Aadhaar aadhaarDetail
+  o Pan panDetail optional
+  o FamilyTree[] familyDetails
+  -->Land[] ownership
+}
+
+abstract concept Aadhaar{
+  o String aadhaarNo
+  o Boolean status
+  o String data  
+}
+
+abstract concept Pan{
+  o String panNo
+  o Boolean status
+  o String data  
+}
+
+abstract concept UserData {
+  o String name
+  o DateTime dob
+}
+
+abstract concept FamilyTree {
+  o UserData detail
+  o Aadhaar aadhaarDetail
+  o Pan panDetail optional
+  o RELATION type 
+}
+
+enum RELATION {
+  o WIFE
+  o SON
+  o DAUGHTER
+  o PARENTS
+  o GARDIANS
+}

@@ -1,0 +1,37 @@
+namespace org.dsociety.rstate.land
+
+import org.dsociety.rstate.participant.*
+
+asset Land identified by landTag {
+  o String landTag
+  o String address
+  o String state
+  o String city
+  o String town_locality
+  o String district
+  o String postOffice
+  o String pincode
+  o Double roadWidth
+  o Double landWidth
+  o Double landHeight
+  o Double[] gpsCoordinates
+  o AREATYPE type default='URBAN'
+  o LANDBELONGS belongs default='SOCIETY'
+}
+
+asset LandOwnerShip extends Land{
+  --> Person owner
+  o Boolean OriginalDocuments
+  o Boolean DocumentVerifiedStatus
+  o String ScanDocumentPath
+}
+enum LANDBELONGS {
+  o STATEAUTHORITY
+  o CENTRALAUTHORITY
+  o SOCIETY
+}
+
+enum  AREATYPE {
+  o RURAL
+  o URBAN
+}
