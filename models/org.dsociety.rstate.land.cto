@@ -14,7 +14,7 @@ asset Land identified by landTag {
   o Double roadWidth
   o Double landWidth
   o Double landHeight
-  o Double[] gpsCoordinates
+  o gpscoordinates[] Coordinates
   o AREATYPE type default='URBAN'
   o LANDBELONGS belongs default='SOCIETY'
 }
@@ -34,4 +34,8 @@ enum LANDBELONGS {
 enum  AREATYPE {
   o RURAL
   o URBAN
+}
+concept gpscoordinates{
+  o Double x_coordinates
+  o Double y_coordinates
 }
