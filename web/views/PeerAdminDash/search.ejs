@@ -1,0 +1,114 @@
+<% include partials/header %>
+<div class="content-wrapper">
+  <div class="row col-md-12 ">
+    <div class="box box-info col-md-12">
+      <div class="box-header with-border" style="
+          height: 10vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      ">
+        <h3 class="box-title" style="
+        font-size: xx-large;
+    ">Search: Land / Person</h3>
+      </div>
+      <div class="box-header with-border" id="formselect" style="
+      height: 5vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  ">
+        click on any one:::
+        <span id="landsrch" value="Land Search">Land Search</span>/
+        <span id="personsrch" value="Person Search">Person Search</span> <br>
+      </div>
+      <form action="" id="landsearch" method="" class="form-horizontal" style="
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    display: none;
+">
+        <div class="form-group">
+          <label for="userid" class="col-sm-3 control-label" style="text-align:start">land ID</label>
+
+          <div class="col-sm-9">
+            <input type="text" name="landid" id="landid" class="form-control" placeholder="Land ID">
+          </div>
+        </div>
+
+        <div class="box-footer bg-info" style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+              ">
+          <button type="submit" class="btn btn-info pull-right">Search</button>
+        </div>
+        <style>
+          .form-group {
+            width: 50vw;
+          }
+        </style>
+      </form>
+      <form action="/peer/search" id="personsearch" method="POST" class="form-horizontal" style="
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    display: none;
+">
+        <div class="form-group">
+          <label for="userid" class="col-sm-3 control-label" style="text-align:start">User ID</label>
+
+          <div class="col-sm-9">
+            <input type="text" name="userid" class="form-control" placeholder="USER ID">
+          </div>
+        </div>
+        <div class="box-footer bg-info" style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+              ">
+          <button type="submit" class="btn btn-info pull-right">Search</button>
+        </div>
+        <style>
+          .form-group {
+            width: 50vw;
+          }
+        </style>
+      </form>
+      <script>
+        $("#formselect").hover(function () {
+          $(this).css("cursor", "pointer")
+        });
+        $("#landsrch").click(function () {
+          $("#landsearch").css("display", "block");
+          $("#personsearch").css("display", "none");
+
+        });
+        $("#personsrch").click(function () {
+          $("#personsearch").css("display", "block");
+          $("#landsearch").css("display", "none");
+        });
+      </script>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+  $("#landsearch").submit(async function (event) {
+    
+    event.preventDefault();
+    var landid=$('#landid').val();
+
+   await axios.get(`http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land/${landid}`)
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    
+  });
+</script>
+<% include partials/footer %>
