@@ -1,0 +1,99 @@
+ 
+<% include partials/header.ejs %>
+<div class="wrapper">
+    <% include partials/navigation.ejs %>
+    <div class="row">
+<div class="col-md-12">
+<div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Person Registration</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form method="POST" action="/peer/person_registration" role="form">
+              <div class="box-body">
+                <div class="row">
+                  <!-- <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Aadhaar Number</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="" name="aadhaar">
+                  </div>
+                  </div>
+                  <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Road Width</label>
+                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="" name="roadWidth">
+                  </div>
+                  </div> -->
+                  <div class="col-sm-6">
+                    <label for="exampleInputEmail1">Aadhaar Number</label>
+                    <div class="input-group input-group-sm">
+                      <input type="text" class="form-control" id="aadhaar">
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-info btn-flat" id="check">Check</button>
+                      </span>
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Name</label>
+                      <input type="text" class="form-control" id="name" placeholder="" name="name">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Date Of Birth</label>
+                      <input type="text" class="form-control" id="dob" placeholder="" name="dob">
+                    </div>
+                  </div>
+                </div>
+               
+              </div>
+              <!-- /.box-body -->
+              <input type="hidden" id="aadhaar1" value="" name="aadhhar">
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div>
+</div>
+</div>
+</aside>
+<!-- /.control-sidebar -->
+<!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+<div class="control-sidebar-bg">
+</div>
+</div>
+<!-- ./wrapper -->
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  $("#check").click(async ()=>{
+      var aadhaar=$('#aadhaar').val();
+      var url="https://floating-sea-68731.herokuapp.com/aadhaarandall/"+aadhaar;
+      console.log(url);
+      
+      await axios.get(url)
+      .then(function (response) {
+        // handle success
+        console.log(response.data);
+        $('#name').val(response.data.aadhaaar.name);
+        $('#dob').val(response.data.aadhaaar.dob);
+        
+        $('#aadhaar1').val(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      
+      
+  })
+</script>
+<% include partials/footer.ejs%>

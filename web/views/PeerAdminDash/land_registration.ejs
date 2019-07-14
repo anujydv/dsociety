@@ -1,288 +1,156 @@
-<% include partials/header %>
-<div class="content-wrapper">
-  <div class="row col-md-14">
-    <div class="box box-info col-md-12">
-      <div class="box-header with-border" style="
-      height: 10vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  ">
-        <h3 class="box-title" style="
-        font-size: xx-large;
-    ">Registration Form</h3>
-      </div>
-      <div class="box-header with-border" id="formselect" style="
-      height: 10vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-  ">
-        click on any one:::
-        <span id="landreg" value="Land Registration">Land Registration</span>/
-        <span id="personreg" value="Person Registration">Person Registration</span> <br>
+<% include partials/header.ejs %>
+<div class="wrapper">
+    <% include partials/navigation.ejs %>
+    <div class="row">
+<div class="col-md-12">
+<div class="box box-primary">
 
-        <script>
-          $("#formselect").hover(function () {
-            $(this).css("cursor", "pointer")
-          });
-          $("#landreg").click(function () {
-            $("#landform").css("display", "block");
-            $("#personform").css("display", "none");
-
-          });
-          $("#personreg").click(function () {
-            $("#personform").css("display", "block");
-            $("#landform").css("display", "none");
-          });
-        </script>
-      </div>
-
-      <form action="/peer/land_registration" id="landform" method="POST" class="form-horizontal" style="
-    display: inline-block;
-    justify-content: center;
-    align-items: center;
-    display: none;
-">
-        <div class="box-body col-md-5">
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">Address</label>
-
-            <div class="col-sm-9">
-              <input type="text" name="address" class="form-control" placeholder="Address">
+            <div class="box-header with-border">
+              <h3 class="box-title">Land Registration</h3>
             </div>
+            <% if(arr != 'undefine'){%>
+              <% for(var i=0;i<arr.length;i++){ %>
+            <div class="alert alert-danger alert-dismissible" role="alert">
+              <%=arr[i].message%>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+              <% }} %>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form action="/peer/land_registration" method="POST" role="form">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Address</label>
+                    <input type="text" class="form-control" id="address" placeholder="" value="<%=address%>" name="address">
+                  </div>
+                  </div>
+                  <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Road Width</label>
+                    <input type="text" class="form-control" id="exampleInputPassword1" placeholder="" value="<%=roadWidth%>" name="roadWidth">
+                  </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">State</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="" value="<%=state%>" name="state">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Land Width</label>
+                      <input type="text" class="form-control" id="exampleInputPassword1" placeholder="" value="<%=landWidth%>" name="landWidth">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">City</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="" value="<%=city%>" name="city" >
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Land Height</label>
+                      <input type="text" class="form-control" id="exampleInputPassword1" placeholder="" value="<%=landHeight%>" name="landHeight">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Town Locality</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="" value="<%=locality%>" name="locality">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Land Type</label>
+                      <input type="text" class="form-control" id="exampleInputPassword1" placeholder=""value="<%=type%>" name="type">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">Post Office</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder="" value="<%=postOffice%>" name="postOffice">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Pincode</label>
+                      <input type="text" class="form-control" id="exampleInputPassword1" placeholder="" value="<%=pincode%>"name="pincode">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="exampleInputEmail1">District</label>
+                      <input type="text" class="form-control" id="exampleInputEmail1" placeholder=""value="<%=district%>" name="district">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="exampleInputPassword1">Gps Coordinates</label>
+                      <div class="row">
+                        <div class="col-sm-4">
+                        <input type="text" class="form-control" id="lat" placeholder="latitude" >
+                        </div>
+                          <div class="col-sm-4">
+                            <input type="text" class="form-control" id="lng" placeholder="longitude">
+                          </div>
+                          <div class="col-sm-4">
+                            <button type="button" class="btn btn-primary" id="latlng">Add</button>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.box-body -->
+              <input type="hidden" value="" id="coordinates" name="coordinates">
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
           </div>
-          <!-- yaha par -->
-          <div class="form-group">
-            <label for="inputPassword3" class="col-sm-3 control-label" style="text-align:start">State</label>
-
-            <div class="col-sm-8">
-              <input type="text" class="form-control" id="inputPassword3" name="state" placeholder="State">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">City</label>
-
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="city" placeholder="City">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">Town Locality</label>
-
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="locality" placeholder="Locality">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">Post Office</label>
-
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="postOffice" placeholder="Post Office">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">District</label>
-
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="district" placeholder="District">
-            </div>
-
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">pincode</label>
-
-            <div class="col-sm-5">
-              <input type="text" class="form-control" name="pincode" placeholder="Pincode">
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="box-body col-md-5">
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">road Width</label>
-
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="roadWidth" placeholder="Road Width">
-            </div>
-
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">land Width</label>
-
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="landWidth" placeholder="Land Width">
-            </div>
-
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">land Height</label>
-
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="landHeight" placeholder="Land Height">
-            </div>
-
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">land type</label>
-
-            <div class="col-sm-8">
-              <input type="text" class="form-control" name="type" placeholder="Land Type">
-            </div>
-
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">gps Coordinates</label>
-
-            <div class="col-sm-4">
-              <input type="text" class="form-control" name="lat" placeholder="Latitude">
-            </div>
-            <div class="col-sm-4">
-              <input type="text" class="form-control" name="lng" placeholder="Longitude">
-            </div>
-          </div>
-          <!-- <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">Property Value</label>
-
-            <div class="col-sm-7" style="
-            float: right;
-        ">
-              <input type="text" class="form-control" id="inputEmail3" placeholder="Property Value">
-            </div>
-          </div> -->
-          <style>
-            .col-sm-8,
-            .col-sm-5,
-            .col-sm-9,
-            .col-sm-4 {
-              float: right;
-            }
-          </style>
-        </div>
-        <div class="clearfix" style="
-    height: auto;
-    min-height: 0vh;
-    display: flex;
-    width: 100vw;
-"></div>
-        <div class="box-footer bg-info" style="
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: -webkit-fill-available; ">
-          <button type="submit" class="btn btn-info">Register</button>
-        </div>
-        <style>
-          .form-group {
-            margin-bottom: 25px;
-          }
-        </style>
-      </form>
-      <form action="/peer/person_registration" id="personform" method="POST" class="form-horizontal" style="
-    display: inline-block;
-    justify-content: center;
-    align-items: center;
-    display: none;
-">
-        <div class="box-body col-md-6 resize">
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">user id</label>
-
-            <div class="col-sm-9">
-              <input type="text" name="userid" class="form-control" placeholder="User ID">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">Name</label>
-
-            <div class="col-sm-9">
-              <input type="text" name="name" class="form-control" placeholder="Name">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">DOB</label>
-
-            <div class="col-sm-9">
-              <input type="text" name="dob" class="form-control" placeholder="Date of Birth">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">Aadhaar No.</label>
-
-            <div class="col-sm-9">
-              <input type="text" name="aadhaarNo" class="form-control" placeholder="Aadhaar No.">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">Status</label>
-
-            <div class="col-sm-9">
-              <input type="text" name="status" class="form-control" placeholder="Status">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">Data</label>
-
-            <div class="col-sm-9">
-              <input type="text" name="data" class="form-control" placeholder="Data">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputName3" class="col-sm-3 control-label" style="text-align:start">ownership</label>
-
-            <div class="col-sm-9">
-              <input type="text" name="ownership" class="form-control" placeholder="Ownership">
-            </div>
-          </div>
-
-        </div>
-        <style>
-          .col-sm-8,
-          .col-sm-5,
-          .col-sm-9,
-          .col-sm-4 {
-            float: right;
-          }
-        </style>
-        <div class="clearfix" style="
-    height: auto;
-    min-height: 0vh;
-    display: flex;
-    width: 100vw;
-"></div>
-        <div class="box-footer bg-info col-md-6" style="
-        display: inline-flex;
-        align-items: center;
-        justify-content: center; ">
-          <button type="submit" class="btn btn-info" style="
-    width: -webkit-fill-available;
-">Register</button>
-        </div>
-        <style>
-          .form-group {
-            margin-bottom: 25px;
-          }
-        </style>
-      </form>
-      <style>
-        @media only screen and (max-width: 992px) {
-          .resize{
-            width: 50vw;
-          }
-        }
-        @media only screen and (max-width: 767px) {
-          .resize{
-            width: 70vw;
-          }
-          .form-control{
-            width: 50vw
-          }
-        }
-      </style>
-    </div>
-  </div>
 </div>
+</div>
+</aside>
+<!-- /.control-sidebar -->
+<!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+<div class="control-sidebar-bg">
+</div>
+</div>
+<!-- ./wrapper -->
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script>
+    var arr = [];
+    $('#latlng').click(()=>{
+      
+      var lat=$('#lat').first().val();
+       var lng= $('#lng').first().val();
+      console.log(lat+" "+lng);      
+      var data={$class: "org.dsociety.rstate.land.gpscoordinates",x_coordinates:lat,y_coordinates:lng}
+      arr.push(data);
+        var arr1=JSON.stringify(arr);
+        $('#coordinates').val(arr1);
+      console.log(arr1);
+    });
 
-<% include partials/footer %>
+    
+
+  </script>
+<% include partials/footer.ejs%>

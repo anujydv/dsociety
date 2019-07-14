@@ -1,0 +1,126 @@
+<% include partials/header.ejs%>
+<body class="hold-transition skin-blue sidebar-mini">
+<% include partials/navigation.ejs%>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    Add Family Member
+                    <small>Control panel</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li class="breadcrumb-item active">Add Family Members</li>
+                </ol>
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-lg-12 col-12">
+                        <!-- Basic Forms -->
+                        <div class="box">
+                            <div class="box-header with-border">
+                                <h4 class="box-title">Add Form</h4>
+                            </div>
+                            <!-- /.box-header -->
+                            <form method="POST" action="/addData">
+                                <div class="box-body">
+                                    <h4 class="mt-0 mb-20">Family Memeber detail</h4>
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <div class="form-group">
+                                                <label for="example_input_full_name">Aadhaar Number</label>
+                                                <input type="text" class="form-control" id="aadhaar"
+                                                    placeholder="Enter Family Member Aadhaar Number">
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <br>
+                                            <button type="button" class="btn btn-primary"
+                                                id="getAadhaarData">Verify</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Relation</label>
+                                        <select class="form-control">
+                                            <option value="">Select Member Relation</option>
+                                            <option value="son">SON</option>
+                                            <option value="daughter">DAUGHTER</option>
+                                            <option value="wife">WIFE</option>
+                                            <option value="mother">MOTHER</option>
+                                            <option value="father">FATHER</option>
+                                            <option value="gardians">GARDIANS</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!-- /.box-body -->
+                                <div class="box-footer">
+                                    <button type="reset" class="btn btn-danger">Reset</button>
+                                    <button type="submit" class="btn btn-success pull-right">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                </div>
+                <div class="member-data">
+
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->        
+    <!-- custom js -->
+<% include partials/footer.ejs%>
+    <script>
+        $(document).ready(function () {
+            $("#getAadhaarData").on('click', () => {
+                console.log("in");
+                var aadhaar = $('#aadhaar').val();
+                $.ajax({
+                    method: "GET",
+                    url: "https://floating-sea-68731.herokuapp.com/aadhaarandall/" + aadhaar,
+                    complete: function (data) {
+                        $('.member-data').children().remove();
+                        let add = `<div class="row fx-element-overlay">
+                    <div class="col-md-12 col-lg-12">
+                        <div class="box box-default">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div class="fx-card-item">
+                                        <div class="fx-card-avatar fx-overlay-1"> <img src="images/card/1.jpg"
+                                                alt="user">
+                                            <div class="fx-overlay">
+                                            </div>
+                                        </div>
+                                        <div class="fx-card-content">
+                                            <h3 class="box-title">${data.responseJSON.aadhaaar.name}</h3> <small>DOB:-${data.responseJSON.aadhaaar.dob}</small>
+                                            <br>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    <div class="card-content" style="padding: 20px;">
+                                        <p><h4>Aadhaar Number:- </h4><span>${data.responseJSON.aadhaaar.addharnumber}</span></p>
+                                       <p><h4>Address:- </h4><span>${data.responseJSON.aadhaaar.address}</span></p>
+                                       <p><h4>Gender:- </h4><span>${data.responseJSON.aadhaaar.gender}</span></p>
+                                    </div>                                    
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                </div>`;
+                        $('.member-data').append(add);
+                    }
+                });
+            });
+        });        
+    </script>
+</body>
+
+</html>

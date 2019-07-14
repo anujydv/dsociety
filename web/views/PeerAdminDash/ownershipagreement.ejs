@@ -1,0 +1,151 @@
+<% include partials/header.ejs %>
+<div class="wrapper">
+    <% include partials/navigation.ejs %>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Land Registration</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form action="/peer/ownership" method="POST" role="form">
+                    <input type="hidden" id="status" value="0" name="status">
+                    <input type="hidden" id="pid" value="" name="personid">
+                    <input type="hidden" id="lid" value="" name="landid">
+
+                    <div class="box-body">
+                        <div class="col-sm-6">
+                            <label for="exampleInputEmail1">Person Id</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" id="personid">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-info btn-flat" id="check1">Check</button>
+                                </span>
+                            </div>
+                                <div class="box box-solid persondisplay" style="display: none">
+                                    <div class="box-header with-border">
+                            
+                                        <h3 class="box-title">Person Details</h3>
+                                    </div>
+                                    <!-- /.box-header -->
+                                    <div class="box-body persondetail">
+                                       
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <!-- /.box -->
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="exampleInputEmail1">Land Id</label>
+                            <div class="input-group input-group-sm">
+                                <input type="text" class="form-control" id="landid">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-info btn-flat" id="check2">Check</button>
+                                </span>
+                            </div>
+                            <div class="box box-solid landdisplay" style="display: none">
+                                <div class="box-header with-border">
+                            
+                                    <h3 class="box-title">Land Details</h3>
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12" id="landdetail1">
+                                        
+                                        </div>
+                                    <div class="col-md-6" id="landdetail2">
+                                      
+                                    </div>
+                                    <div class="col-md-6" id="landdetail3">
+                                      
+                                    </div>
+                                   
+                                    </div>
+                                   
+                                </div>
+                                <!-- /.box-body -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </aside>
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+    <div class="control-sidebar-bg">
+    </div>
+</div>
+<!-- ./wrapper -->
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+    var p=false;
+    var l=false;
+    $("#check1").click(async () => {
+        var personid = $('#personid').val();
+        $('#pid').val(personid);
+        var url = "http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/" + personid;
+        console.log(url);
+
+        await axios.get(url)
+            .then(function (response) {
+                // handle success
+                console.log(response.data);
+                p=true;
+                var persondata=`<dl><dt>Name</dt><dd>${response.data.detail.name}</dd><dt>Date Of Birth</dt><dd>${response.data.detail.dob}</dd><dt>Aadhaar Number</dt><dd>${response.data.aadhaarDetail.aadhaarNo}</dd></dl>`;  
+               $('.persondetail').append(persondata);
+               $('.persondisplay').css("display","block");
+              
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+
+
+    });
+      $("#check2").click(async () => {
+            var landid = $('#landid').val();
+            $('#lid').val(landid);
+            var url = "http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land/" + landid;
+            console.log(url);
+
+            await axios.get(url)
+                .then(function (response) {
+                    // handle success
+                    console.log(response.status);
+                    l=true;
+                    var landdetail1 = `<dl><dt>Address</dt><dd>${response.data.address}</dd><dt>State</dt><dd>${response.data.state}</dd><dt>City</dt><dd>${response.data.city}</dd></dl>`;
+                    var landdetail2 = `<dl><dt>Town Locality</dt><dd>${response.data.town_locality}</dd><dt>Post Office</dt><dd>${response.data.postOffice}</dd><dt>District</dt><dd>${response.data.district}</dd><dt>Pincode</dt><dd>${response.data.pincode}</dd></dl>`;
+                    var landdetail3 = `<dl><dt>Road Width</dt><dd>${response.data.roadWidth}</dd><dt>Land Width</dt><dd>${response.data.landWidth}</dd><dt>Land Height</dt><dd>${response.data.landHeight}</dd></dl><dt>Land Type</dt><dd>${response.data.type}</dd>`;
+
+                    $('#landdetail1').append(landdetail1);
+                    $('#landdetail2').append(landdetail2);
+                    $('#landdetail3').append(landdetail3);
+                    $('.landdisplay').css("display", "block");
+
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+
+
+        });
+        if(p==true && l==true){
+            $('#status').val(1);
+        }
+</script>
+<% include partials/footer.ejs%>

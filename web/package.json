@@ -4,6 +4,7 @@
   "description": "digital land title",
   "main": "src/server.js",
   "scripts": {
+    "start": "node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -22,14 +23,6 @@
     "body-parse": "^0.1.0",
     "body-parser": "^1.19.0",
     "boom": "^7.3.0",
-    "chai": "latest",
-    "chai-as-promised": "latest",
-    "composer-admin": "^0.20.8",
-    "composer-cli": "^0.20.8",
-    "composer-client": "^0.20.8",
-    "composer-common": "^0.20.8",
-    "composer-connector-embedded": "^0.20.8",
-    "composer-cucumber-steps": "^0.20.8",
     "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.4",

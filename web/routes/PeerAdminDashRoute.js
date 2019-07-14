@@ -7,30 +7,126 @@ router.get('/', function (req, res, next) {
   res.render('PeerAdminDash/index');
 });
 router.get('/land_registration', function (req, res) {
-  res.render('PeerAdminDash/land_registration');
+  let arr = [];
+  res.render('PeerAdminDash/land_registration',{arr});
 });
+router.get('/person_registration', function (req, res) {        
+  res.render('PeerAdminDash/person_registration');
+  
+});
+router.post('/person_registration',async (req,res)=>{
+  res.json(req.body);
+  var qwerty = JSON.parse(req.body.aadhhar);
+  console.log(qwerty.aadhaaar.name);
+  
+  // console.log(JSON.parse(req.body.aadhar));
+  
+  var rand = Math.floor(100 + Math.random() * 900).toString();
+  var dater = new Date().getMilliseconds().toString();
+  var id = rand + dater;
+
+  var data = {
+    "$class": "org.dsociety.rstate.participant.Person",
+    "userID": id,
+    "detail": {
+      "$class": "org.dsociety.rstate.participant.UserData",
+      "name": qwerty.aadhaaar.name,
+      "dob": qwerty.aadhaaar.dob
+    },
+    "aadhaarDetail": {
+      "$class": "org.dsociety.rstate.participant.Aadhaar",
+      "aadhaarNo": qwerty.aadhaaar.addharnumber,
+      "status": true,
+      "data": ""
+    },
+    "familyDetails": [
+      {
+        "$class": "org.dsociety.rstate.participant.FamilyTree",
+        "detail": {
+          "$class": "org.dsociety.rstate.participant.UserData",
+          "name": "",
+          "dob": ""
+        },
+        "aadhaarDetail": {
+          "$class": "org.dsociety.rstate.participant.Aadhaar",
+          "aadhaarNo": "",
+          "status": false,
+          "data": ""
+        },
+        "type": ""
+      }
+    ],
+    "ownership": [
+      "resource:org.dsociety.rstate.land.Land#5592"
+    ]
+  }
+  console.log({
+    "$class": "org.dsociety.rstate.participant.Person",
+    "userID": id,
+    "detail": {
+      "$class": "org.dsociety.rstate.participant.UserData",
+      "name": qwerty.aadhaaar.name,
+      "dob": qwerty.aadhaaar.dob
+    },
+    "aadhaarDetail": {
+      "$class": "org.dsociety.rstate.participant.Aadhaar",
+      "aadhaarNo": qwerty.aadhaaar.addharnumber,
+      "status": true,
+      "data": ""
+    },
+  });
+  await axios.post('http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person',
+    {
+      "$class": "org.dsociety.rstate.participant.Person",
+      "userID": id,
+      "detail": {
+        "$class": "org.dsociety.rstate.participant.UserData",
+        "name": qwerty.aadhaaar.name,
+        "dob": qwerty.aadhaaar.dob
+      },
+      "aadhaarDetail": {
+        "$class": "org.dsociety.rstate.participant.Aadhaar",
+        "aadhaarNo": qwerty.aadhaaar.addharnumber,
+        "status": true,
+        "data": ""
+      },      
+    }).then((response)=>{
+      console.log(response.data);
+      console.log("successofperson");
+
+      res.redirect('/peer/person_registration');
+    }).catch(function (error) {
+      console.log("errorofperson");
+
+      console.log(error.response);
+    });
+
+  
+});
+
+
 router.post('/land_registration',async function (req, res) {
   var rand = Math.floor(100 + Math.random() * 900).toString();
   var dater = new Date().getMilliseconds().toString();
   var id = rand + dater;
-  console.log(req.body);
-  var data={
-    "$class": "org.dsociety.rstate.land.Land",
-    "landTag": id,
-    "address": req.body.address,
-    "state": req.body.state,
-    "city": req.body.city,
-    "town_locality": req.body.locality,
-    "district": req.body.district,
-    "postOffice": req.body.postOffice,
-    "pincode": req.body.pincode,
-    "roadWidth": req.body.roadWidth,
-    "landWidth": req.body.landWidth,
-    "landHeight": req.body.landHeight,
-    "gpsCoordinates": [323, 323],
-    "type": "RURAL",
-    "belongs": "STATEAUTHORITY"
-  }
+  res.json(req.body);
+  // var data={
+  //   "$class": "org.dsociety.rstate.land.Land",
+  //   "landTag": id,
+  //   "address": req.body.address,
+  //   "state": req.body.state,
+  //   "city": req.body.city,
+  //   "town_locality": req.body.locality,
+  //   "district": req.body.district,
+  //   "postOffice": req.body.postOffice,
+  //   "pincode": req.body.pincode,
+  //   "roadWidth": req.body.roadWidth,
+  //   "landWidth": req.body.landWidth,
+  //   "landHeight": req.body.landHeight,
+  //   "Coordinates": JSON.parse(req.body.coordinates),
+  //   "type": "RURAL",
+  //   "belongs": "STATEAUTHORITY"
+  // }
   // console.log(data);
   
   await axios.post('http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land', {
@@ -46,7 +142,7 @@ router.post('/land_registration',async function (req, res) {
     "roadWidth": req.body.roadWidth,
     "landWidth": req.body.landWidth,
     "landHeight": req.body.landHeight,
-    "gpsCoordinates": [323, 323],
+    "Coordinates": JSON.parse(req.body.coordinates),
     "type": "RURAL",
     "belongs": "STATEAUTHORITY"
   }
@@ -55,17 +151,36 @@ router.post('/land_registration',async function (req, res) {
   )
     .then(function (response) {
       console.log(response.data);
-      console.log("successfsdvsdscle");
+      console.log("successofland");
       
       res.redirect('/peer/land_registration');
     })
     .catch(function (error) {
-      console.log("errorzzdfzdfczfc");
+      console.log("errorofland");
       
       console.log(error.response);
     });
   
 });
+router.get('/ownership',(req,res)=>{
+  res.render('PeerAdminDash/ownershipagreement');
+});
+
+router.post('/ownership',(req,res)=>{
+  console.log(req.body);
+  res.json(req.body);
+  
+
+  
+});
+
+router.get('/saleagreement',(req,res)=>{
+  res.render('PeerAdminDash/saleagreement');
+});
+router.post('/saleagreement', (req, res) => {
+  res.json(req.body);
+});
+
 
 router.get('/land_transfer', function (req, res, next) {
   res.render('PeerAdminDash/land_transfer');
