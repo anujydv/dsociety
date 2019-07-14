@@ -1,7 +1,7 @@
 html,
 body {
   width: 0vw;
-  height:40vh;
+  height: 40vh;
   background: #111;
   margin: 0 auto;
   box-sizing: border-box;
@@ -12,11 +12,11 @@ body {
   overflow: scroll;
   overflow-y: hidden;
   scroll-behavior: smooth;
-   font-size: 25px;
-   font-family: RobotoSlab-Regular,
-   Roboto Slab;
-   column-fill: balance;
-   letter-spacing: 1px;
+  font-size: 25px;
+  font-family: RobotoSlab-Regular,
+    Roboto Slab;
+  column-fill: balance;
+  letter-spacing: 1px;
 }
 
 body:hover {
@@ -30,7 +30,7 @@ html {
 
 canvas {
   display: block;
-   background: linear-gradient(to bottom, rgb(3, 3, 15) 10%, rgb(34, 98, 106) 100%);
+  background: linear-gradient(to bottom, rgb(3, 3, 15) 10%, rgb(34, 98, 106) 100%);
   /* vertical-align: bottom; */
 }
 
@@ -47,6 +47,12 @@ canvas {
   position: absolute;
   z-index: 1;
 }
+/* ds-logo */
+/* .ds-logo{
+  margin: 0 auto;
+  background-color: transparent;
+} */
+
 
 /* Services */
 .main-view {
@@ -55,7 +61,7 @@ canvas {
   box-sizing: border-box;
   position: absolute;
   z-index: 2;
-   background: linear-gradient(to bottom, rgb(3, 3, 15) 10%, rgb(34, 98, 106) 100%);
+  background: linear-gradient(to bottom, rgb(3, 3, 15) 10%, rgb(34, 98, 106) 100%);
 }
 
 .topTwenty {
@@ -107,7 +113,8 @@ canvas {
   /* align-items: center; */
   position: relative;
 }
-.service-01{
+
+.service-01 {
   margin-inline-start: 2%;
 }
 
@@ -149,7 +156,7 @@ canvas {
   z-index: 3;
   overflow: hidden;
   position: absolute;
-   background: linear-gradient(to bottom, rgb(3,3,15) 10%, rgb(34,98,106) 100%);
+  background: linear-gradient(to bottom, rgb(3, 3, 15) 10%, rgb(34, 98, 106) 100%);
 }
 
 .about {
@@ -165,7 +172,8 @@ canvas {
   margin-right: 1.6%;
   position: relative;
 }
-.person-01{
+
+.person-01 {
   margin-inline-start: 2%
 }
 
@@ -186,6 +194,35 @@ canvas {
   width: 100%;
   z-index: 3;
   position: absolute;
+}
+
+.peoples {
+  width: 100%;
+  height: 80%;
+}
+
+.contact-us {
+  height: 10%;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  display: block;
+  z-index: 10;
+  color: black;
+  font-size: 60px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icons{
+  width: max-content;
+  height: max-content;
+  margin-inline-start: 10px;
+  margin-inline-end: 10px;
+}
+abbr{
+  display: inline;
 }
 
 @media only screen and (max-width: 2561px) {
@@ -209,8 +246,6 @@ canvas {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    height: 90%;
   }
 
   .person-01,
@@ -224,6 +259,7 @@ canvas {
     margin: 0 auto;
     font-size: 5vw;
   }
+
   .heading {
     font-size: 70px;
   }
@@ -240,6 +276,7 @@ canvas {
     width: 30%;
     height: 50%;
   }
+
   .heading {
     font-size: 50px;
   }
@@ -254,11 +291,8 @@ canvas {
   }
 
   .peoples {
-    width: 100%;
-    height: 90%;
     display: block;
     overflow: scroll
-
   }
 
   .person-01,
@@ -273,6 +307,7 @@ canvas {
     margin-top: 2%;
     margin-bottom: 2%;
   }
+
   .heading {
     font-size: 7vw;
   }
@@ -280,22 +315,28 @@ canvas {
   body {
     overflow: scroll;
   }
-  .service-list{
+
+  .service-list {
     display: block;
     overflow: scroll;
   }
+
   .service-01,
   .service-02,
-  .service-03{
+  .service-03 {
     width: 70%;
     height: 30%;
     font-size: 5vw;
   }
-  .service-01-content,.service-02-content,.service-03-content{
+
+  .service-01-content,
+  .service-02-content,
+  .service-03-content {
     font-size: 3vw;
   }
 }
-::-webkit-scrollbar{
+
+::-webkit-scrollbar {
   opacity: 0;
   display: none;
 }

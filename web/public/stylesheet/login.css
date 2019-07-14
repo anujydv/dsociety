@@ -1,12 +1,19 @@
+html,
+body {
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 0;
+}
+
 .ds_login {
     width: 100vw;
     height: 100vh;
     margin: 0 auto;
+    display: flex;
     text-align: center;
     justify-content: center;
     align-items: center;
-    display: flex;
-    background-color: darkslategray;
+    background: linear-gradient(to bottom, rgb(3, 3, 15) 10%, rgb(34, 98, 106) 100%);
     box-sizing: border-box;
     position: inherit;
 }
@@ -30,29 +37,50 @@ input[type=number]::-webkit-outer-spin-button {
 
 
 .ds_login_body {
-    min-width: 30vw;
+    min-width: 20vw;
     width: auto;
-    min-height: 40vh;
+    min-height: 35vh;
     height: auto;
-    border-radius: 5px;
     box-shadow: 10px 10px 25px rgba(0, 0, 0, 0.5);
-    background-color: darkgrey;
+    background: linear-gradient(to bottom, lightgrey 10%, darkgrey 100%);
     overflow: inherit;
+    display: block;
 }
 
 @media only screen and (max-width: 426px) {
     .ds_login_body {
-        border-radius: 0px;
         box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
+        display: block
+    }
+
+    form {
+        width: 90%;
+        margin: 0 auto;
     }
 }
 
-@media only screen and (min-width: 1440px) and (max-width: 2560px) {
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
     .ds_login_body {
-        min-height: 20vh;
-        height: auto;
+        display: block;
+    }
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1440px) {
+    .ds_login_body {
+        height: 50vh;
+        width: 25vw;
         display: grid;
         justify-content: baseline
+    }
+
+    form {
+        width: 90%;
+        margin: 0 auto
+    }
+}
+@media only screen and (min-width: 1440px){
+    .ds_login_body{
+        height: 42vh;
     }
 }
 
@@ -72,7 +100,7 @@ input[type=number]::-webkit-outer-spin-button {
 .ds_form {
     position: relative;
     width: 100%;
-    height: 50%;
+    height: 80%;
     display: flex;
     margin: 0 auto;
 }
@@ -80,7 +108,6 @@ input[type=number]::-webkit-outer-spin-button {
 form {
     width: 90%;
     margin: 0 auto;
-    /* position: relative */
 }
 
 .btn {

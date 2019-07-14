@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$('document').ready(function(){
   TweenLite.to($("body"), 0.6, {
     "width":"100vw"
 
@@ -110,4 +110,15 @@ TweenLite.to($(".main-view"), 0, {
 TweenLite.to($(".main-body"), 0, {
   x: 2 * width,
   display: "block"
+});
+
+// Icons
+  $(".icons").hover(function(){
+    TweenLite.to($(this).children()[0], 0.7, {
+    yPercent:'-40%'
+  })},
+function(){
+  TweenLite.to($(this).children()[0], 0.7, {
+    yPercent:'0%'
+  })
 })
