@@ -1,16 +1,17 @@
 var express = require('express');
 var router = express.Router();
 var axios=require('axios');
+const auth = require('./utils/auth');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', auth, async(req, res) =>{
   res.render('PeerAdminDash/index');
 });
-router.get('/land_registration', function (req, res) {
+router.get('/land_registration', auth,async (req, res)=> {
   let arr = [];
   res.render('PeerAdminDash/land_registration',{arr});
 });
-router.get('/person_registration', function (req, res) {        
+router.get('/person_registration',auth,async (req, res)=> {        
   res.render('PeerAdminDash/person_registration');
   
 });
@@ -105,7 +106,7 @@ router.post('/person_registration',async (req,res)=>{
 });
 
 
-router.post('/land_registration',async function (req, res) {
+router.post('/land_registration',auth,async (req, res)=> {
   var rand = Math.floor(100 + Math.random() * 900).toString();
   var dater = new Date().getMilliseconds().toString();
   var id = rand + dater;
@@ -162,11 +163,11 @@ router.post('/land_registration',async function (req, res) {
     });
   
 });
-router.get('/ownership',(req,res)=>{
+router.get('/ownership',auth,(req,res)=>{
   res.render('PeerAdminDash/ownershipagreement');
 });
 
-router.post('/ownership',(req,res)=>{
+router.post('/ownership',auth,(req,res)=>{
   console.log(req.body);
   res.json(req.body);
   
@@ -174,22 +175,22 @@ router.post('/ownership',(req,res)=>{
   
 });
 
-router.get('/saleagreement',(req,res)=>{
+router.get('/saleagreement',auth,async (req,res)=>{
   res.render('PeerAdminDash/saleagreement');
 });
-router.post('/saleagreement', (req, res) => {
+router.post('/saleagreement',auth,async (req, res) => {
   res.json(req.body);
 });
 
 
-router.get('/land_transfer', function (req, res, next) {
+router.get('/land_transfer',auth ,async (req, res )=> {
   res.render('PeerAdminDash/land_transfer');
 });
-router.get('/search', function (req, res, next) {
+router.get('/search',auth,async (req, res)=> {
   
   res.render('PeerAdminDash/search');
 });
-router.get('/land_updation', function (req, res, next) {
+router.get('/land_updation',auth,async (req, res) =>{
   res.render('PeerAdminDash/land_updation');
 });
 module.exports = router;

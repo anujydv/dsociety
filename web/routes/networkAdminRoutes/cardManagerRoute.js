@@ -1,6 +1,7 @@
 const express = require('express');
 const route = express.Router();
 var network = require('../../composer/logic/card_manager');
+const auth = require('./utils/auth');
 
 function mapToObj(inputMap) {
     let obj = {};
@@ -9,7 +10,7 @@ function mapToObj(inputMap) {
     });
     return obj;
 }
-route.get('/importCard/', (req, res) => {
+route.get('/importCard/',auth,async (req, res) => {
     try {
         let data = network.importCard(cardName, idCard);
         res.json({ data });
@@ -19,7 +20,7 @@ route.get('/importCard/', (req, res) => {
     }
 });
 
-route.get('/exportCard/',async (req, res) => {
+route.get('/exportCard/',auth,async (req, res) => {
     try {
         let data = await network.exportCard(cardName);
         res.json({ data });
@@ -28,7 +29,7 @@ route.get('/exportCard/',async (req, res) => {
         res.json({ error });
     }
 });
-route.get('/listCard/',async (req, res) => {
+route.get('/listCard/',auth,async (req, res) => {
     try {
         let mapData = await network.listCard();        
         let data = mapToObj(mapData);
@@ -38,7 +39,7 @@ route.get('/listCard/',async (req, res) => {
     }
 });
 
-route.get('/deleteCard/',async (req, res) => {
+route.get('/deleteCard/',auth,async (req, res) => {
     try {
         let data = await network.deleteCard(cardName);
         res.json({ data });

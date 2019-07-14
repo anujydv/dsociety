@@ -4,3 +4,4 @@ composer/airlinev8
 composer/.eslintrc.yml
 composer/.dist
 .eslintrc.yml
+.env
