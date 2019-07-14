@@ -83,9 +83,9 @@ route.get('/listAssets', auth,async (req, res) => {
     }
 
 });
-route.get('/listFamily', auth,async (req, res) => {
+route.get('/listFamily',async (req, res) => {
     try {
-        let red = await axios.get('http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/1952');
+        let red = await axios.get(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${req.session.status}`);
         // res.json(red.data);
         res.render('UserAdminDash/list_family', { data: red.data });
     } catch (error) {
