@@ -1,10 +1,10 @@
 require('dotenv').config()
 var express = require('express');
 var bodyParser = require('body-parser');
-// const mongoose = require('../src/dbConnect/mongoose');
-// const mongodbsession = require('connect-mongodb-session')(session);
+const mongoose = require('../src/dbConnect/mongoose');
 var session = require('express-session');
-// var createError = require('http-errors');
+const mongodbsession = require('connect-mongodb-session')(session);
+var createError = require('http-errors');
 const compression = require('compression');
 var cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
@@ -16,7 +16,6 @@ var app = express();
 const port = process.env.PORT || 5000;
 // Routes
 
-var land=require('../routes/land');
 var defaultRoute = require('../routes/defaultRoute');
 var UserAdminDashRoute = require('../routes/UserAdminDashRoute');
 var commomManagerRoute = require('../routes/networkAdminRoutes/commomManagerRoute');
@@ -29,11 +28,10 @@ var PeerAdminDashRoute = require('../routes/PeerAdminDashRoute');
 var commonRoute = require('../routes/commonRoute');
 
 // session db selection
-// var store = new mongodbsession({
-// uri: "",
-// uri: '',
-// collection: "session"
-// });
+var store = new mongodbsession({
+  uri: process.env.DB_URL_SERVER,
+  collection: "session"
+});
 
 // view engine setup
 var csrfProtection = csrf();
@@ -49,23 +47,24 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
-// app.use(session({
-//   secret: 'devil',
-//   saveUninitialized: false,
-//   resave: false,
-//   store: store,
-//   cookie: {
-//     maxAge: 3600000
-//   }
-// }));
+app.use(session({
+  secret: 'devil',
+  saveUninitialized: false,
+  resave: false,
+  store: store,
+  cookie: {
+    maxAge: 3600000
+  }
+}));
 // app.use(csrfProtection);
 app.use(flash());
-// app.use((req, res, next) => {
-//   res.locals.csrfToken = req.csrfToken();
-//   res.locals.validate = req.session.validate;
-//   res.locals.status = req.session.status;
-//   next();
-// });
+app.use((req, res, next) => {
+  // res.locals.csrfToken = req.csrfToken();
+  res.locals.validate = req.session.validate;
+  res.locals.status = req.session.status;
+  res.locals.type = req.session.type;
+  next();
+});
 app.use('/', defaultRoute);
 app.use('/user/', UserAdminDashRoute);
 app.use('/net/', commomManagerRoute);
@@ -76,7 +75,9 @@ app.use('/net/', participantManagerRoute);
 app.use('/net/', transactionManagerRoute);
 app.use('/peer/', PeerAdminDashRoute);
 app.use('/common/', commonRoute);
-app.use("/land",land);
+app.use((req, res) => {
+  res.status(404).send("<h1>Page not found</h1>");
+});
 app.listen(port, function () {
   console.log("Server started at :", port);
 });

@@ -1,15 +1,15 @@
 const express = require('express');
 const route = express.Router();
 var network = require('../../composer/logic/network_manager');
-
+const {auth} = require('../utils/auth');
 // install Network start
-route.get('/installNetwork', async (req, res) => {
+route.get('/installNetwork',auth, async (req, res) => {
     res.render('NetworkAdminDash/networkManager/installNetwork');
 });
 // install Network end
 
 // list Network start
-route.get('/listNetwork', async (req, res) => {
+route.get('/listNetwork',auth, async (req, res) => {
     try {
         let data = await network.listBusinessNetwork();
         res.render('NetworkAdminDash/networkManager/listNetwork', { data });
@@ -20,7 +20,7 @@ route.get('/listNetwork', async (req, res) => {
 // list Network end
 
 // loglevel Network start
-route.get('/logLevelNetwork', async (req, res) => {
+route.get('/logLevelNetwork',auth, async (req, res) => {
     try {
         let data = await network.logBusinessNetwork();
         res.json(data);
@@ -32,13 +32,13 @@ route.get('/logLevelNetwork', async (req, res) => {
 // loglevel Network end
 
 // start Network start
-route.get('/startNetwork', async (req, res) => {
+route.get('/startNetwork',auth, async (req, res) => {
     res.render('NetworkAdminDash/networkManager/startNetwork');
 });
 // start Network end
 
 // test Network start
-route.get('/testNetwork', async (req, res) => {
+route.get('/testNetwork',auth, async (req, res) => {
     try {
         let data = await network.pingBusinessNetwork();
         res.render('NetworkAdminDash/networkManager/testNetwork', { data });
@@ -49,7 +49,7 @@ route.get('/testNetwork', async (req, res) => {
 // test Network end
 
 // upgrade Network start
-route.get('/upgradeNetwork', async (req, res) => {
+route.get('/upgradeNetwork',auth, async (req, res) => {
     res.render('NetworkAdminDash/networkManager/upgradeNetwork');
 });
 // upgrade Network end
