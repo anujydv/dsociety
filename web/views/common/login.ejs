@@ -1,4 +1,5 @@
 <% include ./partials/header %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
 <link rel="stylesheet" type="text/css" media="screen" href="../stylesheet/login.css" />
 <script src="../js/signup.js" type="text/script"></script>
 
@@ -7,9 +8,44 @@
 <body>
     <% if(logindata){ %>
     <div class="error">
-        <p><%= logindata %></p>
+        <p class="errorpara"><i class="fas fa-exclamation-triangle"></i><%= logindata %></p>
     </div>
     <%}%>
+    <style>
+        .error{
+            width: 100vw;
+            height: 7vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            background-color: rgb(83, 83, 253);
+            vertical-align: middle;
+            font-size: 30px;
+            color: white;
+        }
+        .errorpara{
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            background-color: crimson;
+            text-align: center;
+            vertical-align: middle
+        }
+        .fas{
+            margin-inline: 2px
+        }
+    </style>
+    <script>
+        TweenLite.to(document.getElementsByClassName("errorpara"), 0, {
+            yPercent: -100
+        })
+        
+        TweenLite.to(document.getElementsByClassName("errorpara"), 1, {
+            yPercent: 0
+        })
+
+    </script>
     <section class="ds_login">        
         <div class="ds_login_body">
             <div class="ds_login_header">
@@ -20,13 +56,12 @@
                     <div class="form-group">
                         <label for="email">Enter Email Address:</label>
                         <input type="email" id="email" name="email" class="form-control" placeholder="Email Address" maxlength="32"
-                            required>
+                            required autofocus>
                         <span class="validity clearBtn"></span>
                     </div>
                     <div class="form-group">
                         <label for="password">Password:</label>
                         <input type="password" id="password" name="password" class="form-control" required>
-                        </script>
                     </div>
                     <div class="text-center form-group">
                         <input type="submit" class="btn btn-success" value="Login">
@@ -35,4 +70,5 @@
             </div>
         </div>
     </section>
+
     <% include ./partials/footer %>

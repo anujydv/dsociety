@@ -7,3 +7,4 @@ function checkInput(text) {
     }
 
 }
+
