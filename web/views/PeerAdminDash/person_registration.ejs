@@ -28,7 +28,8 @@
                   <div class="col-sm-6">
                     <label for="exampleInputEmail1">Aadhaar Number</label>
                     <div class="input-group input-group-sm">
-                      <input type="text" class="form-control" id="aadhaar">
+                      <input type="number" id="aadhaar" class="form-control" placeholder="----/----/----" required autofocus min="0"
+                        maxlength="12" max="999999999999" pattern="[0-9]{12}" onkeypress="checkAadhaar(this)">
                       <span class="input-group-btn">
                         <button type="button" class="btn btn-info btn-flat" id="check">Check</button>
                       </span>
@@ -70,9 +71,21 @@
 </div>
 <!-- ./wrapper -->
 </div>
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script>
+    function checkAadhaar(event){
+      console.log(event)
+      var checkLength = $('#aadhaar');
+      if(checkLength.val().length === 13){
+        alert("Length of Aadhaar Exceeded")
+      }
+    }
+  </script>
+
 <script>
   $("#check").click(async ()=>{
       var aadhaar=$('#aadhaar').val();

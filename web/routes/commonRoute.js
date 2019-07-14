@@ -38,4 +38,9 @@ routes.post('/check_login/', async (req, res) => {
         console.error(error);
     }    
 });
+
+routes.get('/logout',(req,res)=>{
+    req.session.destroy();
+    res.redirect("/common/login");
+});
 module.exports = routes;

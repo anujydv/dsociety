@@ -1,0 +1,190 @@
+<% include partials/header.ejs %>
+<div class="wrapper">
+    <% include partials/navigation.ejs %>
+    <div class="row">
+            <div class="col-md-12">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" name="landid" id="landsearchvalue">
+                    <span class="input-group-btn">
+                        <button type="button" id="landsearch" class="btn btn-info btn-flat">Go!</button>
+                    </span>
+                </div>
+            </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+
+                <div class="box-header with-border">
+                    <h3 class="box-title">Land Registration</h3>
+                </div>
+                <% if(arr != 'undefine'){%>
+                <% for(var i=0;i<arr.length;i++){ %>
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <%=arr[i].message%>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <% }} %>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form action="/peer/landupdation" method="POST" role="form">
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Address</label>
+                                    <input type="text" class="form-control" id="address1" placeholder=""
+                                        value="<%=address%>" name="address">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Road Width</label>
+                                    <input type="text" class="form-control" id="roadWidth1" placeholder=""
+                                        value="<%=roadWidth%>" name="roadWidth">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">State</label>
+                                    <input type="text" class="form-control" id="state1" placeholder=""
+                                        value="<%=state%>" name="state">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Land Width</label>
+                                    <input type="text" class="form-control" id="landWidth1" placeholder=""
+                                        value="<%=landWidth%>" name="landWidth">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">City</label>
+                                    <input type="text" class="form-control" id="city1" placeholder=""
+                                        value="<%=city%>" name="city">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Land Height</label>
+                                    <input type="text" class="form-control" id="landHeight1" placeholder=""
+                                        value="<%=landHeight%>" name="landHeight">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Town Locality</label>
+                                    <input type="text" class="form-control" id="locality1" placeholder=""
+                                        value="<%=locality%>" name="locality">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Land Type</label>
+                                    <input type="text" class="form-control" id="type1" placeholder=""
+                                        value="<%=type%>" name="type">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Post Office</label>
+                                    <input type="text" class="form-control" id="postOffice1" placeholder=""
+                                        value="<%=postOffice%>" name="postOffice">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Pincode</label>
+                                    <input type="text" class="form-control" id="pincode1" placeholder=""
+                                        value="<%=pincode%>" name="pincode">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">District</label>
+                                    <input type="text" class="form-control" id="district1" placeholder=""
+                                        value="<%=district%>" name="district">
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Gps Coordinates</label>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" id="lat" placeholder="latitude">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control" id="lng" placeholder="longitude">
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button type="button" class="btn btn-primary" id="latlng">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <input type="hidden" value="" id="coordinates" name="coordinates">
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </aside>
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+           immediately after the control sidebar -->
+    <div class="control-sidebar-bg">
+    </div>
+</div>
+<!-- ./wrapper -->
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+$('#landsearch').click(async()=>{
+    var landsearchid=$('#landsearchvalue').val()
+    await axios(`http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land/${landsearchid}`).then((res)=>{
+        console.log(res.data);
+        $("#address1").val(res.data.address);
+        $("#roadWidth1").val(res.data.roadWidth);
+        $("#state1").val(res.data.state);
+        $("#landWidth1").val(res.data.landWidth);
+        $("#city1").val(res.data.city);
+        $("#landHeight1").val(res.data.landHeight);
+        $("#locality1").val(res.data.town_locality);
+        $("#type1").val(res.data.type);
+        $("#postOffice1").val(res.data.postOffice);
+        $("#pincode1").val(res.data.pincode);
+        $("#district1").val(res.data.district);
+
+
+        
+    }).catch((err)=>{
+        console.log(err);
+        
+    });
+    
+});    
+
+
+</script>
+<% include partials/footer.ejs%>
