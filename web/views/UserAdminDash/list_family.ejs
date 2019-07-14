@@ -151,44 +151,47 @@ right connector from last child*/
                         The markup will be simple nested lists
                         -->
                     <div class="box">
-                        <div class="tree">
-                            <ul>
-                                <li>
-                                    <a href="#">Parent</a>
-                                    <ul>
-                                        <li>
-                                            <a href="#">Child</a>
-                                            <ul>
-                                                <li>
-                                                    <a href="#">Grand Child</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="#">Child</a>
-                                            <ul>
-                                                <li><a href="#">Grand Child</a></li>
-                                                <li>
-                                                    <a href="#">Grand Child</a>
-                                                    <ul>
-                                                        <li>
-                                                            <a href="#">Great Grand Child</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">Great Grand Child</a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">Great Grand Child</a>
-                                                        </li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="#">Grand Child</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
+                        <%if(data.familyDetails.length>0){%>
+                        <%for(i=0; i < data.familyDetails.length; i++){%>
+                        <div class="row fx-element-overlay">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="box box-default">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <div class="fx-card-item">
+                                                <div class="fx-card-avatar fx-overlay-1"> <img src="/images/card/1.jpg"
+                                                        alt="user">
+                                                    <div class="fx-overlay">
+                                                    </div>
+                                                </div>
+                                                <div class="fx-card-content">
+                                                    <h3 class="box-title"><%=data.familyDetails[i].detail.name%></h3>
+                                                    <small>DOB:-<%=data.familyDetails[i].detail.dob%></small>
+                                                    <br>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-9">
+                                            <div class="card-content" style="padding: 20px;">
+                                                <p>
+                                                    <h4>Aadhaar Number:- </h4>
+                                                    <span><%=data.familyDetails[i].aadhaarDetail.aadhaarNo%></span>
+                                                </p>
+                                                <p>
+                                                    <h4>Relation:- </h4>
+                                                    <span><%=data.familyDetails[i].type%></span>
+                                                </p>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+                        <%}}else{%>
+                            <div class="box">
+                                <h4>NO Member Found</h4>
+                            </div>
+                            <%}%>
                         <br>
                         <br>
                     </div>
