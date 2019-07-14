@@ -16,7 +16,6 @@ var app = express();
 const port = process.env.PORT || 5000;
 // Routes
 
-var land = require('../routes/land');
 var defaultRoute = require('../routes/defaultRoute');
 var UserAdminDashRoute = require('../routes/UserAdminDashRoute');
 var commomManagerRoute = require('../routes/networkAdminRoutes/commomManagerRoute');
@@ -76,7 +75,6 @@ app.use('/net/', participantManagerRoute);
 app.use('/net/', transactionManagerRoute);
 app.use('/peer/', PeerAdminDashRoute);
 app.use('/common/', commonRoute);
-app.use("/land", land);
 app.use((req, res) => {
   res.status(404).send("<h1>Page not found</h1>");
 });

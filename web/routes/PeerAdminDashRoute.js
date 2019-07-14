@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var axios=require('axios');
-const auth = require('./utils/auth');
+const {auth} = require('./utils/auth');
 
 /* GET home page. */
 router.get('/', auth, async(req, res) =>{

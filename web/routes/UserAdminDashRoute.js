@@ -1,6 +1,6 @@
 const express = require('express');
 const route = express.Router();
-const auth = require('./utils/auth');
+const {auth} = require('./utils/auth');
 
 // route.get('/', (req, res) => {
 //     res.render('common/signup', {
