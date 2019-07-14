@@ -22,12 +22,12 @@ route.get('/addMember', auth, async (req, res) => {
 });
 route.post('/add', auth, async (req, res) => {
     try {
-        let formData = JSON.stringify(req.body.aadhaarData);
-        let red = await axios.get(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${req.session.status}`);
+        let formData = JSON.parse(req.body.aadhaarData);        
+        let red = await axios.get(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${req.session.status}`);        
         await axios.post('http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person',
             {
                 "$class": "org.dsociety.rstate.participant.Person",
-                "userID": formData.aadhaaar.addharnumber%10000000,
+                "userID": 5467,
                 "detail": {
                     "$class": "org.dsociety.rstate.participant.UserData",
                     "name": formData.aadhaaar.name,
@@ -42,7 +42,7 @@ route.post('/add', auth, async (req, res) => {
             });
         red.data.familyDetails.push({
             "$class": "org.dsociety.rstate.participant.Person",
-            "userID": formData.aadhaaar.addharnumber % 10000000,
+            "userID": 4564,
             "detail": {
                 "$class": "org.dsociety.rstate.participant.UserData",
                 "name": formData.aadhaaar.name,
@@ -55,7 +55,8 @@ route.post('/add', auth, async (req, res) => {
                 "data": ""
             },
         });
-        await axios.post(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person${req.session.status}`,red.data);
+        console.log(red.data);
+        await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person${req.session.status}`,red.data);
         res.redirect('/listFamily');
         res.render('UserAdminDash/list_family');
         } catch (error) {
