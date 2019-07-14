@@ -222,8 +222,8 @@ router.post('/ownership', auth, async (req, res) => {
     let landdata = await axios.get(`http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land/${landid}`);
     landdata.data.owner = `resource:org.dsociety.rstate.participant.Person#${personid}`;
     persondata.data.ownership.push(`resource:org.dsociety.rstate.land.Land#${landid}`);
-    let persondata = await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${personid}`, persondata.data);
-    let landdata = await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land/${landid}`, landdata.data);
+    await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${personid}`, persondata.data);
+    await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land/${landid}`, landdata.data);
     res.redirect('/ownership', { status: true });
   } catch (error) {
     res.json(error);
@@ -247,9 +247,9 @@ router.post('/saleagreement', auth, async (req, res) => {
     });
     buyerdata.data.ownership.push(`resource:org.dsociety.rstate.land.Land#${landid}`);;
     landdata.data.owner = `resource:org.dsociety.rstate.participant.Person#${personid}`;
-    let sellerdata = await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${seller}`);
-    let buyerdata = await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${buyer}`);
-    let landdata = await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land/${landid}`);
+     await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${seller}`);
+     await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${buyer}`);
+     await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land/${landid}`);
     res.redirect('/saleagreement', { status: true });
   } catch (error) {
     res.json(error);
