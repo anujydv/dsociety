@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Land Registration</h3>
+                    <h3 class="box-title">Sale Agreement</h3>
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
@@ -135,7 +135,24 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+$('#personid').keyup(()=>{
+    let person=$('#personid').val()
+    if(/[a-zA-Z]/.test(person)){
+        alert("Enter number only.");
+        $('#personid').val(" ")
 
+    }
+});
+    $('#landid').keyup(() => {
+        let land = $('#landid').val()
+        if (/[a-zA-Z]/.test(land)) {
+            alert("Enter number only.")
+            $('#landid').val("")
+        }
+    })
+
+</script>
 <script>
     var p = false;
     var l = false;
