@@ -5,7 +5,7 @@ const {auth} = require('./utils/auth');
 
 /* GET home page. */
 
-router.get('/land_registration', function (req, res) {
+router.get('/land_registration',auth,function (req, res) {
   var arr = []  
   res.render('PeerAdminDash/land_registration', { arr: arr,address:"",
   roadWidth:0,
@@ -29,7 +29,7 @@ router.get('/person_registration',auth,async (req, res)=> {
   res.render('PeerAdminDash/person_registration');
   
 });
-router.post('/person_registration',async (req,res)=>{
+router.post('/person_registration',auth,async (req,res)=>{
   res.json(req.body);
   var qwerty = JSON.parse(req.body.aadhhar);
   console.log(qwerty.aadhaaar.name);

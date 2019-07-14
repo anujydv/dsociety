@@ -1,6 +1,6 @@
 const express = require('express');
 const route = express.Router();
-var network = require('../../composer/logic/network_manager');
+// var network = require('../../composer/logic/network_manager');
 const {auth} = require('../utils/auth');
 // install Network start
 route.get('/installNetwork',auth, async (req, res) => {
