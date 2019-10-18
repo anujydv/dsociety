@@ -6,28 +6,28 @@ participant Person identified by userID {
   o UserData detail
   o Aadhaar aadhaarDetail
   o Pan panDetail optional
-  o FamilyTree[] familyDetails
-  -->Land[] ownership
+  o FamilyTree[] familyDetails optional
+  -->Land[] ownership optional
 }
 
-abstract concept Aadhaar{
+concept Aadhaar{
   o String aadhaarNo
   o Boolean status
   o String data  
 }
 
-abstract concept Pan{
+concept Pan{
   o String panNo
   o Boolean status
   o String data  
 }
 
-abstract concept UserData {
+concept UserData {
   o String name
-  o DateTime dob
+  o String dob
 }
 
-abstract concept FamilyTree {
+concept FamilyTree {
   o UserData detail
   o Aadhaar aadhaarDetail
   o Pan panDetail optional

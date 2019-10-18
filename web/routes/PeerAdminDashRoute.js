@@ -91,7 +91,7 @@ router.post('/person_registration', auth, async (req, res) => {
   //     "data": ""
   //   },
   // });
-  await axios.post('http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person',
+  await axios.post('http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person',
     {
       "$class": "org.dsociety.rstate.participant.Person",
       "userID": id,
@@ -181,7 +181,7 @@ router.post('/land_registration', auth, async (req, res) => {
   } else {
 
 
-    await axios.post('http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land', {
+    await axios.post('http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land', {
       "$class": "org.dsociety.rstate.land.Land",
       "landTag": id,
       "address": req.body.address,
@@ -218,12 +218,12 @@ router.post('/ownership', auth, async (req, res) => {
   try {
     let personid = res.body.personid;
     let landid = res.body.landid;
-    let persondata = await axios.get(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${personid}`);
-    let landdata = await axios.get(`http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land/${landid}`);
+    let persondata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${personid}`);
+    let landdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/${landid}`);
     landdata.data.owner = `resource:org.dsociety.rstate.participant.Person#${personid}`;
     persondata.data.ownership.push(`resource:org.dsociety.rstate.land.Land#${landid}`);
-    await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${personid}`, persondata.data);
-    await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land/${landid}`, landdata.data);
+    await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${personid}`, persondata.data);
+    await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/${landid}`, landdata.data);
     res.redirect('/ownership', { status: true });
   } catch (error) {
     res.json(error);
@@ -238,18 +238,18 @@ router.post('/saleagreement', auth, async (req, res) => {
     let seller = res.body.person1id;
     let buyer = res.body.person2id;
     let landid = res.body.landid;
-    let sellerdata = await axios.get(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${seller}`);
-    let buyerdata = await axios.get(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${buyer}`);
-    let landdata = await axios.get(`http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land/${landid}`);
+    let sellerdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${seller}`);
+    let buyerdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${buyer}`);
+    let landdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/${landid}`);
     arr = sellerdata.data.ownership;
     sellerdata.data.ownership = array.filter(function (value, index, arr) {
       return value != `resource:org.dsociety.rstate.land.Land#${landid}`;
     });
     buyerdata.data.ownership.push(`resource:org.dsociety.rstate.land.Land#${landid}`);;
     landdata.data.owner = `resource:org.dsociety.rstate.participant.Person#${personid}`;
-     await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${seller}`);
-     await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.participant.Person/${buyer}`);
-     await axios.put(`http://148.100.245.141:3000/api/org.dsociety.rstate.land.Land/${landid}`);
+     await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${seller}`);
+     await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${buyer}`);
+     await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/${landid}`);
     res.redirect('/saleagreement', { status: true });
   } catch (error) {
     res.json(error);

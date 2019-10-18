@@ -1,6 +1,6 @@
 const express = require('express');
 const route = express.Router();
-var network = require('../../composer/logic/card_manager');
+// var network = require('../../composer/logic/card_manager');
 const {auth} = require('../utils/auth');
 
 function mapToObj(inputMap) {

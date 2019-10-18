@@ -1,6 +1,6 @@
-require('dotenv').config()
 var express = require('express');
 var bodyParser = require('body-parser');
+require('dotenv').config();
 const mongoose = require('../src/dbConnect/mongoose');
 var session = require('express-session');
 const mongodbsession = require('connect-mongodb-session')(session);
