@@ -31,5 +31,5 @@ concept FamilyTree {
   o UserData detail
   o Aadhaar aadhaarDetail
   o Pan panDetail optional
-  o String type 
+  o String familyType
 }
