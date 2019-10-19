@@ -33,7 +33,7 @@
                                         <div class="col-8">
                                             <div class="form-group">
                                                 <label for="example_input_full_name">Aadhaar Number</label>
-                                                <input type="text" class="form-control" id="aadhaar"
+                                                <input type="text" class="form-control" id="aadhaar" name="aadhaar"
                                                     placeholder="Enter Family Member Aadhaar Number">
                                             </div>
                                         </div>
@@ -43,16 +43,16 @@
                                                 id="getAadhaarData">Verify</button>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group">                                        
                                         <label>Relation</label>
-                                        <select class="form-control">
+                                        <select class="form-control" name="typeMember">
                                             <option value="">Select Member Relation</option>
-                                            <option value="son">SON</option>
-                                            <option value="daughter">DAUGHTER</option>
-                                            <option value="wife">WIFE</option>
-                                            <option value="mother">MOTHER</option>
-                                            <option value="father">FATHER</option>
-                                            <option value="gardians">GARDIANS</option>
+                                            <option value="SON">SON</option>
+                                            <option value="DAUGHTER">DAUGHTER</option>
+                                            <option value="WIFE">WIFE</option>
+                                            <option value="PARENTS">MOTHER</option>
+                                            <option value="PARENTS">FATHER</option>
+                                            <option value="GARDIANS">GARDIANS</option>
                                         </select>
                                     </div>
                                 </div>

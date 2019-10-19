@@ -31,91 +31,33 @@ router.get('/person_registration', auth, async (req, res) => {
 
 });
 router.post('/person_registration', auth, async (req, res) => {
-  res.json(req.body);
-  var qwerty = JSON.parse(req.body.aadhhar);
-  console.log(qwerty.aadhaaar.name);
+  try {
+    var qwerty = JSON.parse(req.body.aadhhar);
+    var rand = Math.floor(100 + Math.random() * 900).toString();
+    var dater = new Date().getMilliseconds().toString();
+    var id = rand + dater;
+    await axios.post('http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person',
+      {
+        "$class": "org.dsociety.rstate.participant.Person",
+        "userID": id,
+        "detail": {
+          "$class": "org.dsociety.rstate.participant.UserData",
+          "name": qwerty.aadhaaar.name,
+          "dob": qwerty.aadhaaar.dob
+        },
+        "aadhaarDetail": {
+          "$class": "org.dsociety.rstate.participant.Aadhaar",
+          "aadhaarNo": qwerty.aadhaaar.addharnumber,
+          "status": true,
+          "data": ""
+        },
+      });
+    res.redirect('/peer/person_registration');
+  } catch (e) {
+    console.log("errorofperson");
 
-  // console.log(JSON.parse(req.body.aadhar));
-
-  var rand = Math.floor(100 + Math.random() * 900).toString();
-  var dater = new Date().getMilliseconds().toString();
-  var id = rand + dater;
-
-  // var data = {
-  //   "$class": "org.dsociety.rstate.participant.Person",
-  //   "userID": id,
-  //   "detail": {
-  //     "$class": "org.dsociety.rstate.participant.UserData",
-  //     "name": qwerty.aadhaaar.name,
-  //     "dob": qwerty.aadhaaar.dob
-  //   },
-  //   "aadhaarDetail": {
-  //     "$class": "org.dsociety.rstate.participant.Aadhaar",
-  //     "aadhaarNo": qwerty.aadhaaar.addharnumber,
-  //     "status": true,
-  //     "data": ""
-  //   },
-  //   "familyDetails": [
-  //     {
-  //       "$class": "org.dsociety.rstate.participant.FamilyTree",
-  //       "detail": {
-  //         "$class": "org.dsociety.rstate.participant.UserData",
-  //         "name": "",
-  //         "dob": ""
-  //       },
-  //       "aadhaarDetail": {
-  //         "$class": "org.dsociety.rstate.participant.Aadhaar",
-  //         "aadhaarNo": "",
-  //         "status": false,
-  //         "data": ""
-  //       },
-  //       "type": ""
-  //     }
-  //   ],
-  //   "ownership": [
-  //     "resource:org.dsociety.rstate.land.Land#5592"
-  //   ]
-  // }
-  // console.log({
-  //   "$class": "org.dsociety.rstate.participant.Person",
-  //   "userID": id,
-  //   "detail": {
-  //     "$class": "org.dsociety.rstate.participant.UserData",
-  //     "name": qwerty.aadhaaar.name,
-  //     "dob": qwerty.aadhaaar.dob
-  //   },
-  //   "aadhaarDetail": {
-  //     "$class": "org.dsociety.rstate.participant.Aadhaar",
-  //     "aadhaarNo": qwerty.aadhaaar.addharnumber,
-  //     "status": true,
-  //     "data": ""
-  //   },
-  // });
-  await axios.post('http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person',
-    {
-      "$class": "org.dsociety.rstate.participant.Person",
-      "userID": id,
-      "detail": {
-        "$class": "org.dsociety.rstate.participant.UserData",
-        "name": qwerty.aadhaaar.name,
-        "dob": qwerty.aadhaaar.dob
-      },
-      "aadhaarDetail": {
-        "$class": "org.dsociety.rstate.participant.Aadhaar",
-        "aadhaarNo": qwerty.aadhaaar.addharnumber,
-        "status": true,
-        "data": ""
-      },
-    }).then((response) => {
-      console.log(response.data);
-      console.log("successofperson");
-
-      res.redirect('/peer/person_registration');
-    }).catch(function (error) {
-      console.log("errorofperson");
-
-      console.log(error.response);
-    });
+    console.error(e);
+  };
 
 
 });
@@ -216,41 +158,76 @@ router.get('/ownership', auth, (req, res) => {
 
 router.post('/ownership', auth, async (req, res) => {
   try {
-    let personid = res.body.personid;
-    let landid = res.body.landid;
+    let personid = req.body.personid;
+    let landid = req.body.landid;
     let persondata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${personid}`);
     let landdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/${landid}`);
-    landdata.data.owner = `resource:org.dsociety.rstate.participant.Person#${personid}`;
-    persondata.data.ownership.push(`resource:org.dsociety.rstate.land.Land#${landid}`);
-    await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${personid}`, persondata.data);
-    await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/${landid}`, landdata.data);
-    res.redirect('/ownership', { status: true });
+    let landOwnership = {
+      ...landdata.data,
+      "$class": "org.dsociety.rstate.land.LandOwnerShip",
+      "owner": `resource:org.dsociety.rstate.participant.Person#${personid}`,
+      "OriginalDocuments": true,
+      "DocumentVerifiedStatus": true,
+      "ScanDocumentPath": "Verified",
+    }
+
+    if (!persondata.data.ownership) {
+      persondata.data.ownership = [`resource:org.dsociety.rstate.land.Land#${landid}`]
+    } else {
+      persondata.data.ownership.push(`resource:org.dsociety.rstate.land.Land#${landid}`);
+    }
+    console.log(persondata.data);
+    console.log(landOwnership);
+    delete persondata.data.userID;
+    await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${personid}`, { ...persondata.data });
+    await axios.post(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.LandOwnerShip/`, { ...landOwnership });
+    // let ownershipagreement = {
+    //   "$class": "org.dsociety.rstate.tarnsition.OwnerShipAgreement",
+    //   "Owner": `resource:org.dsociety.rstate.participant.Person#${personid}`,
+    //   "detail": `resource:org.dsociety.rstate.land.LandOwnerShip#${landid}`,
+    //   "EstimatedPrice": 12.3
+    // }
+    // await axios.post(`http://148.100.244.39:3000/api/org.dsociety.rstate.tarnsition.OwnerShipAgreement/`, { ...ownershipagreement });
+    res.redirect('/peer/ownership');
   } catch (error) {
     res.json(error);
   }
 });
 
 router.get('/saleagreement', auth, async (req, res) => {
-  res.render('PeerAdminDash/saleagreement',{status:false});
+  res.render('PeerAdminDash/saleagreement', { status: false });
 });
 router.post('/saleagreement', auth, async (req, res) => {
   try {
-    let seller = res.body.person1id;
-    let buyer = res.body.person2id;
-    let landid = res.body.landid;
+    let seller = req.body.person1id;
+    let buyer = req.body.person2id;
+    let landid = req.body.landid;
     let sellerdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${seller}`);
     let buyerdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${buyer}`);
-    let landdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/${landid}`);
+    let landdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/${landid}`);    
     arr = sellerdata.data.ownership;
-    sellerdata.data.ownership = array.filter(function (value, index, arr) {
+    sellerdata.data.ownership = sellerdata.data.ownership = array.filter(function (value, index, arr) {
       return value != `resource:org.dsociety.rstate.land.Land#${landid}`;
-    });
-    buyerdata.data.ownership.push(`resource:org.dsociety.rstate.land.Land#${landid}`);;
-    landdata.data.owner = `resource:org.dsociety.rstate.participant.Person#${personid}`;
-     await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${seller}`);
-     await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${buyer}`);
-     await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/${landid}`);
-    res.redirect('/saleagreement', { status: true });
+    });        
+    if (!buyerdata.data.ownership){
+      buyerdata.data.ownership = [`resource:org.dsociety.rstate.land.Land#${landid}`]
+    }else{
+      buyerdata.data.ownership.push(`resource:org.dsociety.rstate.land.Land#${landid}`);;
+    }
+    let landOwnership = {
+      ...landdata.data,
+      "$class": "org.dsociety.rstate.land.LandOwnerShip",
+      "owner": `resource:org.dsociety.rstate.participant.Person#${personid}`,
+      "OriginalDocuments": true,
+      "DocumentVerifiedStatus": true,
+      "ScanDocumentPath": "Verified",
+    }
+    delete sellerdata.data.userID;
+    delete buyerdata.data.userID;
+    await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${seller}`,{...sellerdata});
+    await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${buyer}`,{...buyerdata});
+    await axios.post(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.LandOwnerShip/`, { ...landOwnership });
+    res.redirect('/saleagreement');
   } catch (error) {
     res.json(error);
   }
@@ -278,3 +255,54 @@ router.post('/saleagreement', auth, async (req, res) => {
 // });
 
 module.exports = router;
+
+// var data = {
+  //   "$class": "org.dsociety.rstate.participant.Person",
+  //   "userID": id,
+  //   "detail": {
+  //     "$class": "org.dsociety.rstate.participant.UserData",
+  //     "name": qwerty.aadhaaar.name,
+  //     "dob": qwerty.aadhaaar.dob
+  //   },
+  //   "aadhaarDetail": {
+  //     "$class": "org.dsociety.rstate.participant.Aadhaar",
+  //     "aadhaarNo": qwerty.aadhaaar.addharnumber,
+  //     "status": true,
+  //     "data": ""
+  //   },
+  //   "familyDetails": [
+  //     {
+  //       "$class": "org.dsociety.rstate.participant.FamilyTree",
+  //       "detail": {
+  //         "$class": "org.dsociety.rstate.participant.UserData",
+  //         "name": "",
+  //         "dob": ""
+  //       },
+  //       "aadhaarDetail": {
+  //         "$class": "org.dsociety.rstate.participant.Aadhaar",
+  //         "aadhaarNo": "",
+  //         "status": false,
+  //         "data": ""
+  //       },
+  //       "type": ""
+  //     }
+  //   ],
+  //   "ownership": [
+  //     "resource:org.dsociety.rstate.land.Land#5592"
+  //   ]
+  // }
+  // console.log({
+  //   "$class": "org.dsociety.rstate.participant.Person",
+  //   "userID": id,
+  //   "detail": {
+  //     "$class": "org.dsociety.rstate.participant.UserData",
+  //     "name": qwerty.aadhaaar.name,
+  //     "dob": qwerty.aadhaaar.dob
+  //   },
+  //   "aadhaarDetail": {
+  //     "$class": "org.dsociety.rstate.participant.Aadhaar",
+  //     "aadhaarNo": qwerty.aadhaaar.addharnumber,
+  //     "status": true,
+  //     "data": ""
+  //   },
+  // });

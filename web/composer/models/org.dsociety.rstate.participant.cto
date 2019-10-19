@@ -31,13 +31,5 @@ concept FamilyTree {
   o UserData detail
   o Aadhaar aadhaarDetail
   o Pan panDetail optional
-  o RELATION type 
-}
-
-enum RELATION {
-  o WIFE
-  o SON
-  o DAUGHTER
-  o PARENTS
-  o GARDIANS
+  o String type 
 }
