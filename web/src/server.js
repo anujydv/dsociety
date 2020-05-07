@@ -66,15 +66,15 @@ app.use((req, res, next) => {
   next();
 });
 app.use('/', defaultRoute);
-app.use('/user/', UserAdminDashRoute);
-app.use('/net/', commomManagerRoute);
-app.use('/net/', cardManagerRoute);
-app.use('/net/', identityManagerRoute);
-app.use('/net/', networkManagerRoute);
-app.use('/net/', participantManagerRoute);
-app.use('/net/', transactionManagerRoute);
-app.use('/peer/', PeerAdminDashRoute);
-app.use('/common/', commonRoute);
+app.use('/user', UserAdminDashRoute);
+app.use('/network', commomManagerRoute);
+app.use('/network', cardManagerRoute);
+app.use('/network', identityManagerRoute);
+app.use('/network', networkManagerRoute);
+app.use('/network', participantManagerRoute);
+app.use('/network', transactionManagerRoute);
+app.use('/peer', PeerAdminDashRoute);
+app.use('/common', commonRoute);
 app.use((req, res) => {
   res.status(404).send("<h1>Page not found</h1>");
 });

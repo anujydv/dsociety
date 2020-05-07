@@ -20,14 +20,14 @@ routes.post('/check_login/', async (req, res) => {
             req.session.type = data.type;
             switch (req.session.type){
                 case 'user':
-                    res.redirect('/user/dashboard');
+                    res.redirect('/user/');
                     break;
                 case 'peer':
                     res.redirect('/peer/');
                     break;
                 case 'net':
                     req.session.card = data.card;
-                    res.redirect('/net/');
+                    res.redirect('/network/');
                     break;
             }
         }else{

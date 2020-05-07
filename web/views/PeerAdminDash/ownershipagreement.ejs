@@ -104,7 +104,7 @@
     $("#check1").click(async () => {
         var personid = $('#personid').val();
         $('#pid').val(personid);
-        var url = "http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/" + personid;
+        var url = "http://localhost:3000/api/org.dsociety.rstate.participant.Person/" + personid;
         console.log(url);
 
         await axios.get(url)
@@ -127,7 +127,7 @@
       $("#check2").click(async () => {
             var landid = $('#landid').val();
             $('#lid').val(landid);
-            var url = "http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/" + landid;
+            var url = "http://localhost:3000/api/org.dsociety.rstate.land.Land/" + landid;
             console.log(url);
 
             await axios.get(url)

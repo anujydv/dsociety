@@ -10,7 +10,7 @@ function mapToObj(inputMap) {
     return obj;
 }
 
-route.get('/dashboard', auth, async (req, res) => {
+route.get('/', auth, async (req, res) => {
     res.render('UserAdminDash/index', {
         title: "Dashboard"
     });
@@ -28,9 +28,9 @@ route.post('/add', auth, async (req, res) => {
         var dater = new Date().getMilliseconds().toString();
         var id = rand + dater;
         console.log(req.session.status);
-        let red = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${req.session.status}`);
+        let red = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${req.session.status}`);
         console.log(red.data);
-        let data = await axios.post('http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person',
+        let data = await axios.post('http://localhost:3000/api/org.dsociety.rstate.participant.Person',
             {
                 "$class": "org.dsociety.rstate.participant.Person",
                 "userID": id,
@@ -64,7 +64,7 @@ route.post('/add', auth, async (req, res) => {
         });
         delete red.data.userID;
         console.log(red.data);
-        let d = await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${req.session.status}`, { ...red.data });
+        let d = await axios.put(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${req.session.status}`, { ...red.data });
         res.json({d});
         // res.redirect('/listFamily');
         // res.render('UserAdminDash/list_family');
@@ -81,10 +81,17 @@ route.post('/add', auth, async (req, res) => {
 // });
 route.get('/listAssets', auth, async (req, res) => {
     try {
-        let red = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${req.session.status}`);
+        let red = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${req.session.status}`,{            
+        headers: {
+                'Accept': 'application/json'
+            }
+        });
+        console.log(red)
         let arr = [];
+        console.log(req.session.status);
+        console.log(arr);
         for (i = 0; i < red.data.ownership.length; i++) {
-            let l = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/${red.data.ownership[i].split('#')[1]}`);
+            let l = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.land.Land/${red.data.ownership[i].split('#')[1]}`);
             arr.push(l.data);
         }
         res.render('UserAdminDash/list_assets', { data: arr });
@@ -95,7 +102,7 @@ route.get('/listAssets', auth, async (req, res) => {
 });
 route.get('/listFamily', auth, async (req, res) => {
     try {
-        let red = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${req.session.status}`);
+        let red = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${req.session.status}`);
         // res.json(red.data);
         res.render('UserAdminDash/list_family', { data: red.data });
     } catch (error) {

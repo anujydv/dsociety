@@ -36,7 +36,7 @@ router.post('/person_registration', auth, async (req, res) => {
     var rand = Math.floor(100 + Math.random() * 900).toString();
     var dater = new Date().getMilliseconds().toString();
     var id = rand + dater;
-    await axios.post('http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person',
+    await axios.post('http://localhost:3000/api/org.dsociety.rstate.participant.Person',
       {
         "$class": "org.dsociety.rstate.participant.Person",
         "userID": id,
@@ -69,13 +69,14 @@ router.post('/land_registration', auth, async (req, res) => {
   var id = rand + dater;
   var arr = [];
 
+  console.log(req.body.address)
   if (req.body.address == "") {
     arr.push({ message: "Address can't be blank" });
 
   }
-  if (/^[a-zA-Z0-9\s,.'-]{3,}$/.test(req.body.address)) {
-    arr.push({ message: "Enter the valid address." })
-  }
+  // if (/^[a-zA-Z0-9\s,.'-]+$/.test(req.body.address)) {
+  //   arr.push({ message: "Enter the valid address." })
+  // }
   if (!/[a-zA-Z][a-zA-Z] */.test(req.body.state)) {
     arr.push({ message: "Enter state as alphabets." })
   }
@@ -122,8 +123,8 @@ router.post('/land_registration', auth, async (req, res) => {
 
   } else {
 
-
-    await axios.post('http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land', {
+    
+    await axios.post('http://localhost:3000/api/org.dsociety.rstate.land.Land', {
       "$class": "org.dsociety.rstate.land.Land",
       "landTag": id,
       "address": req.body.address,
@@ -160,8 +161,8 @@ router.post('/ownership', auth, async (req, res) => {
   try {
     let personid = req.body.personid;
     let landid = req.body.landid;
-    let persondata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${personid}`);
-    let landdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/${landid}`);
+    let persondata = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${personid}`);
+    let landdata = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.land.Land/${landid}`);
     let landOwnership = {
       ...landdata.data,
       "$class": "org.dsociety.rstate.land.LandOwnerShip",
@@ -179,15 +180,15 @@ router.post('/ownership', auth, async (req, res) => {
     console.log(persondata.data);
     console.log(landOwnership);
     delete persondata.data.userID;
-    await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${personid}`, { ...persondata.data });
-    await axios.post(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.LandOwnerShip/`, { ...landOwnership });
+    await axios.put(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${personid}`, { ...persondata.data });
+    await axios.post(`http://localhost:3000/api/org.dsociety.rstate.land.LandOwnerShip/`, { ...landOwnership });
     // let ownershipagreement = {
     //   "$class": "org.dsociety.rstate.tarnsition.OwnerShipAgreement",
     //   "Owner": `resource:org.dsociety.rstate.participant.Person#${personid}`,
     //   "detail": `resource:org.dsociety.rstate.land.LandOwnerShip#${landid}`,
     //   "EstimatedPrice": 12.3
     // }
-    // await axios.post(`http://148.100.244.39:3000/api/org.dsociety.rstate.tarnsition.OwnerShipAgreement/`, { ...ownershipagreement });
+    // await axios.post(`http://localhost:3000/api/org.dsociety.rstate.tarnsition.OwnerShipAgreement/`, { ...ownershipagreement });
     res.redirect('/peer/ownership');
   } catch (error) {
     res.json(error);
@@ -202,9 +203,9 @@ router.post('/saleagreement', auth, async (req, res) => {
     let seller = req.body.person1id;
     let buyer = req.body.person2id;
     let landid = req.body.landid;
-    let sellerdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${seller}`);
-    let buyerdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${buyer}`);
-    let landdata = await axios.get(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.Land/${landid}`);    
+    let sellerdata = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${seller}`);
+    let buyerdata = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${buyer}`);
+    let landdata = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.land.Land/${landid}`);    
     arr = sellerdata.data.ownership;
     sellerdata.data.ownership = sellerdata.data.ownership = array.filter(function (value, index, arr) {
       return value != `resource:org.dsociety.rstate.land.Land#${landid}`;
@@ -224,9 +225,9 @@ router.post('/saleagreement', auth, async (req, res) => {
     }
     delete sellerdata.data.userID;
     delete buyerdata.data.userID;
-    await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${seller}`,{...sellerdata});
-    await axios.put(`http://148.100.244.39:3000/api/org.dsociety.rstate.participant.Person/${buyer}`,{...buyerdata});
-    await axios.post(`http://148.100.244.39:3000/api/org.dsociety.rstate.land.LandOwnerShip/`, { ...landOwnership });
+    await axios.put(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${seller}`,{...sellerdata});
+    await axios.put(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${buyer}`,{...buyerdata});
+    await axios.post(`http://localhost:3000/api/org.dsociety.rstate.land.LandOwnerShip/`, { ...landOwnership });
     res.redirect('/saleagreement');
   } catch (error) {
     res.json(error);
