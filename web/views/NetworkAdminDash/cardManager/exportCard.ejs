@@ -2,6 +2,16 @@
 <div class="wrapper">
     <% include ../partials/navigation.ejs %>
     <section class="content">
+        <% if(status === true){%>
+        <div class="alert alert-success">
+            Card found
+        </div>
+        <%}%>
+                    <% if(status === false){%>
+        <div class="alert alert-warning">
+            Some error
+        </div>
+        <%}%>
         <div class="row">
             <!-- left column -->
             <div class="col-md-12">
@@ -12,11 +22,11 @@
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
-                    <form role="form" method="POST" action="">
+                    <form role="form" method="POST" action="/network/exportCard/">
                         <div class="box-body">
                             <div class="form-group">
                                 <label for="CardName">Card Name</label>
-                                <input type="text" class="form-control" id="card_name" placeholder="Enter Card Name">
+                                <input type="text" class="form-control" name="card_name" id="card_name" placeholder="Enter Card Name">
                             </div>                            
                         </div>
                         <!-- /.box-body -->
@@ -30,6 +40,16 @@
             <!--/.col (left) -->
         </div>
         <!-- /.row -->
+        <div class="row">
+            <div class="col-md-12">
+                <!-- general form elements -->
+                <div class="box box-primary">
+            <% if(card_data !== ''){%>
+        <pre class="col-md-12" style="word-wrap: break-word;"><%= card_data %></pre>
+        <%}%>
+        </div>
+        </div>
+        </div>
     </section>
 </div>
 </aside>

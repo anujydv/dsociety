@@ -1,8 +1,7 @@
 var auth = (req, res, next) => {
     if (req.session.validate !== true) {
         res.redirect('/common/login');
-    } else {
-        console.log(req.session.type)
+    } else {        
         switch (req.session.type) {
             case 'user':
                 if (req.originalUrl.match('user')) {
@@ -28,7 +27,6 @@ var auth = (req, res, next) => {
         }
     }
 }
-
 module.exports = {
     auth
 }
