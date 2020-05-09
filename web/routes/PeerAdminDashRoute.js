@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
+const Email = require('../src/model/email');
 var axios = require('axios');
 const { auth } = require('./utils/auth');
+const _ = require('underscore');
 
 /* GET home page. */
 
@@ -34,6 +36,8 @@ router.post('/person_registration', auth, async (req, res) => {
   try {
     var qwerty = JSON.parse(req.body.aadhhar);
     var rand = Math.floor(100 + Math.random() * 900).toString();
+    var split_date = qwerty.aadhaaar.dob.split('/')
+    var date = new Date(Date.parse(split_date[2] + "-" + split_date[1] + "-" + split_date[0]));
     var dater = new Date().getMilliseconds().toString();
     var id = rand + dater;
     await axios.post('http://localhost:3000/api/org.dsociety.rstate.participant.Person',
@@ -43,7 +47,7 @@ router.post('/person_registration', auth, async (req, res) => {
         "detail": {
           "$class": "org.dsociety.rstate.participant.UserData",
           "name": qwerty.aadhaaar.name,
-          "dob": qwerty.aadhaaar.dob
+          "dob": date.toISOString()
         },
         "aadhaarDetail": {
           "$class": "org.dsociety.rstate.participant.Aadhaar",
@@ -52,6 +56,7 @@ router.post('/person_registration', auth, async (req, res) => {
           "data": ""
         },
       });
+    await Email.findOneAndUpdate({ "aadhaarno": qwerty.aadhaaar.addharnumber }, { $set: { level: id } });
     res.redirect('/peer/person_registration');
   } catch (e) {
     console.log("errorofperson");
@@ -123,7 +128,7 @@ router.post('/land_registration', auth, async (req, res) => {
 
   } else {
 
-    
+
     await axios.post('http://localhost:3000/api/org.dsociety.rstate.land.Land', {
       "$class": "org.dsociety.rstate.land.Land",
       "landTag": id,
@@ -200,37 +205,39 @@ router.get('/saleagreement', auth, async (req, res) => {
 });
 router.post('/saleagreement', auth, async (req, res) => {
   try {
-    let seller = req.body.person1id;
-    let buyer = req.body.person2id;
-    let landid = req.body.landid;
-    let sellerdata = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${seller}`);
-    let buyerdata = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${buyer}`);
-    let landdata = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.land.Land/${landid}`);    
-    arr = sellerdata.data.ownership;
-    sellerdata.data.ownership = sellerdata.data.ownership = array.filter(function (value, index, arr) {
-      return value != `resource:org.dsociety.rstate.land.Land#${landid}`;
-    });        
-    if (!buyerdata.data.ownership){
-      buyerdata.data.ownership = [`resource:org.dsociety.rstate.land.Land#${landid}`]
-    }else{
-      buyerdata.data.ownership.push(`resource:org.dsociety.rstate.land.Land#${landid}`);;
+    let seller_id = req.body.person1id;
+    let buyer_id = req.body.person2id;
+    var land_id = req.body.landid;
+    let sellerdata = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${seller_id}`);
+    let buyerdata = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${buyer_id}`);
+    let landdata = await axios.get(`http://localhost:3000/api/org.dsociety.rstate.land.Land/${land_id}`);
+    let seller = { ...sellerdata.data }
+    let buyer = { ...buyerdata.data }
+    seller.ownership = seller.ownership.filter((value) => {
+      return value !== "resource:org.dsociety.rstate.land.Land#" + land_id;
+    });
+    if (!buyer.ownership) {
+      buyer.ownership = [`resource:org.dsociety.rstate.land.Land#${land_id}`]
+    } else {
+      buyer.ownership.push(`resource:org.dsociety.rstate.land.Land#${land_id}`);;
     }
     let landOwnership = {
       ...landdata.data,
       "$class": "org.dsociety.rstate.land.LandOwnerShip",
-      "owner": `resource:org.dsociety.rstate.participant.Person#${personid}`,
+      "owner": `resource:org.dsociety.rstate.participant.Person#${buyer_id}`,
       "OriginalDocuments": true,
       "DocumentVerifiedStatus": true,
       "ScanDocumentPath": "Verified",
     }
-    delete sellerdata.data.userID;
-    delete buyerdata.data.userID;
-    await axios.put(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${seller}`,{...sellerdata});
-    await axios.put(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${buyer}`,{...buyerdata});
-    await axios.post(`http://localhost:3000/api/org.dsociety.rstate.land.LandOwnerShip/`, { ...landOwnership });
-    res.redirect('/saleagreement');
+    delete seller.userID;
+    delete buyer.userID;
+    delete landOwnership.landTag;
+    await axios.put(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${seller_id}`, { ...seller });
+    await axios.put(`http://localhost:3000/api/org.dsociety.rstate.participant.Person/${buyer_id}`, { ...buyer });
+    await axios.put(`http://localhost:3000/api/org.dsociety.rstate.land.LandOwnerShip/${land_id}`, { ...landOwnership });
+    res.redirect('saleagreement');
   } catch (error) {
-    res.json(error);
+    console.error(error)
   }
 });
 
