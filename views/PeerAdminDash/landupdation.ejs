@@ -2,14 +2,14 @@
 <div class="wrapper">
     <% include partials/navigation.ejs %>
     <div class="row">
-            <div class="col-md-12">
-                <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" name="landid" id="landsearchvalue">
-                    <span class="input-group-btn">
-                        <button type="button" id="landsearch" class="btn btn-info btn-flat">Go!</button>
-                    </span>
-                </div>
+        <div class="col-md-12">
+            <div class="input-group input-group-sm">
+                <input type="text" class="form-control" name="landid" id="landsearchvalue">
+                <span class="input-group-btn">
+                    <button type="button" id="landsearch" class="btn btn-info btn-flat">Go!</button>
+                </span>
             </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -67,8 +67,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">City</label>
-                                    <input type="text" class="form-control" id="city1" placeholder=""
-                                        value="<%=city%>" name="city">
+                                    <input type="text" class="form-control" id="city1" placeholder="" value="<%=city%>"
+                                        name="city">
                                 </div>
                             </div>
                             <div class="col-sm-6">
@@ -90,8 +90,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Land Type</label>
-                                    <input type="text" class="form-control" id="type1" placeholder=""
-                                        value="<%=type%>" name="type">
+                                    <input type="text" class="form-control" id="type1" placeholder="" value="<%=type%>"
+                                        name="type">
                                 </div>
                             </div>
                         </div>
@@ -157,33 +157,33 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
-$('#landsearch').click(async()=>{
-    var landsearchid=$('#landsearchvalue').val()
-    await axios(`http://localhost:3000/api/org.dsociety.rstate.land.Land/${landsearchid}`).then((res)=>{
-        console.log(res.data);
-        $("#address1").val(res.data.address);
-        $("#roadWidth1").val(res.data.roadWidth);
-        $("#state1").val(res.data.state);
-        $("#landWidth1").val(res.data.landWidth);
-        $("#city1").val(res.data.city);
-        $("#landHeight1").val(res.data.landHeight);
-        $("#locality1").val(res.data.town_locality);
-        $("#type1").val(res.data.type);
-        $("#postOffice1").val(res.data.postOffice);
-        $("#pincode1").val(res.data.pincode);
-        $("#district1").val(res.data.district);
+    $('#landsearch').click(async () => {
+        var landsearchid = $('#landsearchvalue').val()
+        await axios("<%= process.env.BASE_URI %>/<%= process.env.BASE_LAND %>/" + landsearchid).then((res) => {
+            console.log(res.data);
+            $("#address1").val(res.data.address);
+            $("#roadWidth1").val(res.data.roadWidth);
+            $("#state1").val(res.data.state);
+            $("#landWidth1").val(res.data.landWidth);
+            $("#city1").val(res.data.city);
+            $("#landHeight1").val(res.data.landHeight);
+            $("#locality1").val(res.data.town_locality);
+            $("#type1").val(res.data.type);
+            $("#postOffice1").val(res.data.postOffice);
+            $("#pincode1").val(res.data.pincode);
+            $("#district1").val(res.data.district);
 
 
-        
-    }).catch((err)=>{
-        console.log(err);
-        
+
+        }).catch((err) => {
+            console.log(err);
+
+        });
+
     });
-    
-});    
 
 
 </script>

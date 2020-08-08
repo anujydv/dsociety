@@ -50,8 +50,8 @@
                                         Option one is this and that—be sure to include why it's great
                                     </label>
                                 </div>
-                               
-                              
+
+
                             </div>
                             <!-- /.box -->
                         </div>
@@ -74,7 +74,7 @@
                                         <div class="col-md-6" id="landdetail1">
 
                                         </div>
-                                        
+
 
                                     </div>
 
@@ -116,7 +116,7 @@
             <div class="modal-body">
                 <div class="box box-solid landdisplay">
                     <div class="box-header with-border">
-                
+
                         <h3 class="box-title">Land Details</h3>
                     </div>
                     <!-- /.box-header -->
@@ -124,12 +124,12 @@
                         <div class="row">
                             <div class="col-md-8" id="landdetail1">
                             </div>
-                            <div class="col-md-6" id="landdetail2">                
+                            <div class="col-md-6" id="landdetail2">
                             </div>
-                            <div class="col-md-6" id="landdetail3">            
-                            </div>                
+                            <div class="col-md-6" id="landdetail3">
+                            </div>
                         </div>
-                
+
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -144,14 +144,14 @@
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-$('#personid').keyup(()=>{
-    let person=$('#personid').val()
-    if(/[a-zA-Z]/.test(person)){
-        alert("Enter number only.");
-        $('#personid').val(" ")
+    $('#personid').keyup(() => {
+        let person = $('#personid').val()
+        if (/[a-zA-Z]/.test(person)) {
+            alert("Enter number only.");
+            $('#personid').val(" ")
 
-    }
-});
+        }
+    });
     $('#landid').keyup(() => {
         let land = $('#landid').val()
         if (/[a-zA-Z]/.test(land)) {
@@ -164,21 +164,28 @@ $('#personid').keyup(()=>{
 <script>
     var p = false;
     var l = false;
-    var l1=false;
+    var l1 = false;
     $("#check1").click(async () => {
         var personid = $('#personid').val();
         $('#p1id').val(personid);
-        var url = "http://35.239.126.233:3000/api/Person/" + personid;
+        var url = "<%= process.env.BASE_URI %>/<%= process.env.BASE_PERSON %>/" + personid;
         console.log(url);
 
         await axios.get(url)
             .then(function (response) {
                 // handle success
                 console.log(response.data);
-            
+
                 p = true;
-               
-                var persondata = `<dl><dt>Name</dt><dd>${response.data.detail.name}</dd><dt>Date Of Birth</dt><dd>${response.data.detail.dob}</dd><dt>Aadhaar Number</dt><dd>${response.data.aadhaarDetail.aadhaarNo}</dd></dl>`;
+
+                var persondata = `<dl>
+                    <dt>Name</dt>
+                    <dd>${response.data.detail.name}</dd>
+                    <dt>Date Of Birth</dt>
+                    <dd>${response.data.detail.dob}</dd>
+                    <dt>Aadhaar Number</dt>
+                    <dd>${response.data.aadhaarDetail.aadhaarNo}</dd>
+                </dl>`;
                 $('.persondetail').children().remove();
                 $('.persondetail').append(persondata);
                 $('.persondisplay').css("display", "block");
@@ -186,46 +193,74 @@ $('#personid').keyup(()=>{
 
                 $('#landss').children().remove();
 
-                for(let i=0;i< response.data.ownership.length;i++){
-                var landss = `<div class="radio"><label><input type="radio"  name="optionsRadios" id="optionsRadios${i+1}" value="${response.data.ownership[i].split("#")[1]}" checked="">${response.data.ownership[i].split("#")[1]}</label></div>`;
+                for (let i = 0; i < response.data.ownership.length; i++) {
+                    var landss = `<div class="radio"><label><input
+                            type="radio" name="optionsRadios" id="optionsRadios${i + 1}"
+                            value="${response.data.ownership[i].split(" #")[1]}"
+                            checked="">${response.data.ownership[i].split("#")[1]}</label></div>`;
                     $('#landss').append(landss);
-                 
 
-                   
-                     $(`#optionsRadios${i+1}`).click(() => {
-                             setTimeout(function () {
-                                 $('#exampleModal').modal('show');
-                             }, 2000);
 
-                         let qwe= $(`#optionsRadios${i+1}`).val();
+
+                    $(`#optionsRadios${i + 1}`).click(() => {
+                        setTimeout(function () {
+                            $('#exampleModal').modal('show');
+                        }, 2000);
+
+                        let qwe = $(`#optionsRadios${i + 1}`).val();
                         console.log(qwe);
                         $('#ladid').val(qwe);
-                        l1=true;
+                        l1 = true;
 
-                        let url=`http://35.239.126.233:3000/api/Land/${qwe}`;
-                         axios.get(url).then((response)=>{
-                             
-                             console.log(response.data);
-                             
-                             var landdetail1 = `<dl><dt>Address</dt><dd>${response.data.address}</dd><dt>State</dt><dd>${response.data.state}</dd><dt>City</dt><dd>${response.data.city}</dd></dl>`;
-                             var landdetail2 = `<dl><dt>Town Locality</dt><dd>${response.data.town_locality}</dd><dt>Post Office</dt><dd>${response.data.postOffice}</dd><dt>District</dt><dd>${response.data.district}</dd><dt>Pincode</dt><dd>${response.data.pincode}</dd></dl>`;
-                             var landdetail3 = `<dl><dt>Road Width</dt><dd>${response.data.roadWidth}</dd><dt>Land Width</dt><dd>${response.data.landWidth}</dd><dt>Land Height</dt><dd>${response.data.landHeight}</dd></dl><dt>Land Type</dt><dd>${response.data.type}</dd>`;
-                             
-                            //  $('#clear1').children().remove();
+                        let url = "<%= process.env.BASE_URI %>/<%= process.env.BASE_LAND %>/" + qwe;
+                        axios.get(url).then((response) => {
+
+                            console.log(response.data);
+
+                            var landdetail1 = `<dl>
+                <dt>Address</dt>
+                <dd>${response.data.address}</dd>
+                <dt>State</dt>
+                <dd>${response.data.state}</dd>
+                <dt>City</dt>
+                <dd>${response.data.city}</dd>
+            </dl>`;
+                            var landdetail2 = `<dl>
+                <dt>Town Locality</dt>
+                <dd>${response.data.town_locality}</dd>
+                <dt>Post Office</dt>
+                <dd>${response.data.postOffice}</dd>
+                <dt>District</dt>
+                <dd>${response.data.district}</dd>
+                <dt>Pincode</dt>
+                <dd>${response.data.pincode}</dd>
+            </dl>`;
+                            var landdetail3 = `<dl>
+                <dt>Road Width</dt>
+                <dd>${response.data.roadWidth}</dd>
+                <dt>Land Width</dt>
+                <dd>${response.data.landWidth}</dd>
+                <dt>Land Height</dt>
+                <dd>${response.data.landHeight}</dd>
+            </dl>
+            <dt>Land Type</dt>
+            <dd>${response.data.type}</dd>`;
+
+                            // $('#clear1').children().remove();
                             $('#landdetail1').append(landdetail1);
                             $('#landdetail2').append(landdetail2);
                             $('#landdetail3').append(landdetail3);
-                            
-                        }).catch((error)=>{
+
+                        }).catch((error) => {
                             console.log(error);
-                            
+
                         })
 
 
                     });
                 }
-                $('#landss').css("display","block");
-               
+                $('#landss').css("display", "block");
+
 
             })
             .catch(function (error) {
@@ -238,7 +273,7 @@ $('#personid').keyup(()=>{
     $("#check2").click(async () => {
         var landid = $('#landid').val();
         $('#p2id').val(landid);
-        var url = "http://35.239.126.233:3000/api/Person/" + landid;
+        var url = "<%= process.env.BASE_URI %>/<%= process.env.BASE_PERSON %>/" + landid;
         console.log(url);
 
         await axios.get(url)
@@ -246,7 +281,14 @@ $('#personid').keyup(()=>{
                 // handle success
                 console.log(response.data);
                 l = true;
-                var landdetail1 = `<dl><dt>Name</dt><dd>${response.data.detail.name}</dd><dt>Date Of Birth</dt><dd>${response.data.detail.dob}</dd><dt>Aadhaar Number</dt><dd>${response.data.aadhaarDetail.aadhaarNo}</dd></dl>`;
+                var landdetail1 = `<dl>
+                <dt>Name</dt>
+                <dd>${response.data.detail.name}</dd>
+                <dt>Date Of Birth</dt>
+                <dd>${response.data.detail.dob}</dd>
+                <dt>Aadhaar Number</dt>
+                <dd>${response.data.aadhaarDetail.aadhaarNo}</dd>
+            </dl>`;
                 $('#landdetail1').children().remove();
                 $('#landdetail1').append(landdetail1);
                 $('.landdisplay').css("display", "block");
@@ -259,8 +301,8 @@ $('#personid').keyup(()=>{
 
 
     });
-    if (p == true && l == true && l1==true) {
+    if (p == true && l == true && l1 == true) {
         $('#status').val(1);
     }
 </script>
-<% include partials/footer.ejs%>
+            <% include partials/footer.ejs%>
