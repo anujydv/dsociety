@@ -3,7 +3,6 @@ var router = express.Router();
 const Email = require('../src/model/email');
 var axios = require('axios');
 const { auth } = require('./utils/auth');
-require("dotenv").config();
 
 /* GET home page. */
 
@@ -40,7 +39,7 @@ router.post('/person_registration', auth, async (req, res) => {
     var date = new Date(Date.parse(split_date[2] + "-" + split_date[1] + "-" + split_date[0]));
     var dater = new Date().getMilliseconds().toString();
     var id = rand + dater;
-    await axios.post(`${process.env.URL}/api/Person`,
+    await axios.post(`${process.env.BASE_URI}/${process.env.BASE_PERSON}`,
       {
         "$class": "org.dsociety.rstate.participant.Person",
         "userID": id,
@@ -119,7 +118,7 @@ router.post('/land_registration', auth, async (req, res) => {
 
     });
   } else {
-    await axios.post(`${process.env.URL}/api/Land`, {
+    await axios.post(`${process.env.BASE_URI}/${process.env.BASE_LAND}`, {
       "$class": "org.dsociety.rstate.land.Land",
       "landTag": id,
       "address": req.body.address,
@@ -151,8 +150,8 @@ router.post('/ownership', auth, async (req, res) => {
   try {
     let personid = req.body.personid;
     let landid = req.body.landid;
-    let persondata = await axios.get(`${process.env.URL}/api/Person/${personid}`);
-    let landdata = await axios.get(`${process.env.URL}/api/Land/${landid}`);
+    let persondata = await axios.get(`${process.env.BASE_URI}/${process.env.BASE_PERSON}/${personid}`);
+    let landdata = await axios.get(`${process.env.BASE_URI}/${process.env.BASE_LAND}/${landid}`);
     let landOwnership = {
       ...landdata.data,
       "$class": "org.dsociety.rstate.land.LandOwnerShip",
@@ -170,8 +169,8 @@ router.post('/ownership', auth, async (req, res) => {
     console.log(persondata.data);
     console.log(landOwnership);
     delete persondata.data.userID;
-    await axios.put(`${process.env.URL}/api/Person/${personid}`, { ...persondata.data });
-    await axios.post(`${process.env.URL}/api/LandOwnerShip/`, { ...landOwnership });    
+    await axios.put(`${process.env.BASE_URI}/${process.env.BASE_PERSON}/${personid}`, { ...persondata.data });
+    await axios.post(`${process.env.BASE_URI}/${process.env.BASE_LANDOWNERSHIP}`, { ...landOwnership });
     res.redirect('/peer/ownership');
   } catch (error) {
     res.json(error);
@@ -186,9 +185,9 @@ router.post('/saleagreement', auth, async (req, res) => {
     let seller_id = req.body.person1id;
     let buyer_id = req.body.person2id;
     var land_id = req.body.landid;
-    let sellerdata = await axios.get(`${process.env.URL}/api/Person/${seller_id}`);
-    let buyerdata = await axios.get(`${process.env.URL}/api/Person/${buyer_id}`);
-    let landdata = await axios.get(`${process.env.URL}/api/Land/${land_id}`);
+    let sellerdata = await axios.get(`${process.env.BASE_URI}/${process.env.BASE_PERSON}/${seller_id}`);
+    let buyerdata = await axios.get(`${process.env.BASE_URI}/${process.env.BASE_PERSON}/${buyer_id}`);
+    let landdata = await axios.get(`${process.env.BASE_URI}/${process.env.BASE_LAND}/${land_id}`);
     let seller = { ...sellerdata.data }
     let buyer = { ...buyerdata.data }
     seller.ownership = seller.ownership.filter((value) => {
@@ -210,9 +209,9 @@ router.post('/saleagreement', auth, async (req, res) => {
     delete seller.userID;
     delete buyer.userID;
     delete landOwnership.landTag;
-    await axios.put(`${process.env.URL}/api/Person/${seller_id}`, { ...seller });
-    await axios.put(`${process.env.URL}/api/Person/${buyer_id}`, { ...buyer });
-    await axios.put(`${process.env.URL}/api/LandOwnerShip/${land_id}`, { ...landOwnership });
+    await axios.put(`${process.env.BASE_URI}/${process.env.BASE_PERSON}/${seller_id}`, { ...seller });
+    await axios.put(`${process.env.BASE_URI}/${process.env.BASE_PERSON}/${buyer_id}`, { ...buyer });
+    await axios.put(`${process.env.BASE_URI}/${process.env.BASE_LANDOWNERSHIP}/${land_id}`, { ...landOwnership });
     res.redirect('saleagreement');
   } catch (error) {
     console.error(error)

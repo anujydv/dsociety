@@ -3,7 +3,6 @@ const route = express.Router();
 const { auth } = require('./utils/auth');
 const axios = require('axios');
 const Email = require("../src/model/email");
-require("dotenv").config();
 
 function mapToObj(inputMap) {
     let obj = {};
@@ -31,8 +30,8 @@ route.post('/add', auth, async (req, res) => {
         var split_date = formData.aadhaaar.dob.split('/')
         var date = new Date(Date.parse(split_date[2] + "-" + split_date[1] + "-" + split_date[0]));
         var id = rand + dater;
-        let red = await axios.get(`${process.env.URL}/api/Person/${req.session.status}`);
-        await axios.post(`${process.env.URL}/api/Person`,
+        let red = await axios.get(`${process.env.BASE_URI}/${process.env.BASE_PERSON}/${req.session.status}`);
+        await axios.post(`${process.env.BASE_URI}/${process.env.BASE_PERSON}`,
             {
                 "$class": "org.dsociety.rstate.participant.Person",
                 "userID": id,
@@ -53,12 +52,12 @@ route.post('/add', auth, async (req, res) => {
             "type": req.body['typeMember']
         });
         delete red.data.userID;
-        let d = await axios.put(`${process.env.URL}/api/Person/${req.session.status}`, { ...red.data });
+        let d = await axios.put(`${process.env.BASE_URI}/${process.env.BASE_PERSON}/${req.session.status}`, { ...red.data });
         await Email.findOneAndUpdate(
             { aadhaarno: formData.aadhaaar.addharnumber },
             { $set: { level: id } }
         );
-        res.redirect('listFamily');        
+        res.redirect('listFamily');
     } catch (error) {
         console.log(error);
     }
@@ -66,7 +65,7 @@ route.post('/add', auth, async (req, res) => {
 
 route.get('/listAssets', auth, async (req, res) => {
     try {
-        let red = await axios.get(`${process.env.URL}/api/Person/${req.session.status}`, {
+        let red = await axios.get(`${process.env.BASE_URI}/${process.env.BASE_PERSON}/${req.session.status}`, {
             headers: {
                 'Accept': 'application/json'
             }
@@ -74,7 +73,7 @@ route.get('/listAssets', auth, async (req, res) => {
         const arr = [];
         if (red.data.ownership) {
             for (i = 0; i < red.data.ownership.length; i++) {
-                let l = await axios.get(`${process.env.URL}/api/Land/${red.data.ownership[i].split('#')[1]}`);
+                let l = await axios.get(`${process.env.BASE_URI}/${process.env.BASE_LAND}/${red.data.ownership[i].split('#')[1]}`);
                 arr.push(l.data);
             }
         }
@@ -87,15 +86,15 @@ route.get('/listAssets', auth, async (req, res) => {
 route.get('/listFamily', auth, async (req, res) => {
     try {
         const family_members = [];
-        const types = []        
-        let red = await axios.get(`${process.env.URL}/api/Person/${req.session.status}`);        
+        const types = []
+        let red = await axios.get(`${process.env.BASE_URI}/${process.env.BASE_PERSON}/${req.session.status}`);
         for (let i = 0; i < red.data.familyDetails.length; i++) {
             const details = await axios.get(
-                `${process.env.URL}/api/Person/${red.data.familyDetails[i].userID}`
-            );            
+                `${process.env.BASE_URI}/${process.env.BASE_PERSON}/${red.data.familyDetails[i].userID}`
+            );
             family_members.push(details.data);
             types.push(red.data.familyDetails[i].type);
-        }        
+        }
         res.render('UserAdminDash/list_family', { data: family_members, types: types });
     } catch (error) {
         res.json(error);

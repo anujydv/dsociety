@@ -5,3 +5,4 @@ composer/.eslintrc.yml
 composer/.dist
 .eslintrc.yml
 .env
+test.js
