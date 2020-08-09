@@ -196,8 +196,8 @@
                 for (let i = 0; i < response.data.ownership.length; i++) {
                     var landss = `<div class="radio"><label><input
                             type="radio" name="optionsRadios" id="optionsRadios${i + 1}"
-                            value="${response.data.ownership[i].split("#")[1]}"
-                            checked="">${response.data.ownership[i].split("#")[1]}</label></div>`;
+                            value="${response.data.ownership[i].split('#')[1]}" checked=""> ${
+                        response.data.ownership[i].split("#")[1]}</label></div> `;
                     $('#landss').append(landss);
 
 
